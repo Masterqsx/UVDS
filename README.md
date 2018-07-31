@@ -15,7 +15,7 @@ To provide analytical vision content that can drive innovation, vision data stor
 
 #### [Gradle](https://gradle.org/guides/)
   - Project Build and Management Framework
-  - Alternative: Maven(better script)
+  - Alternative: Maven(worse script)
 
 #### [MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/tutorial.html)
   - RDBMS
@@ -62,3 +62,27 @@ To provide analytical vision content that can drive innovation, vision data stor
 
 #### [Log4j](https://logging.apache.org/log4j/2.x/javadoc.html)
   - Logging Framework
+
+## Story 2 - Hello World
+### Description
+This task is about using Gradle to initialize the whole project, configure dependencies: Spring Boot and deploy to Docker container.
+
+### Instruction
+We initialize the whole project with type under our root directory `UVDS`:
+```
+gradle init
+```
+Then the basic Gradle configuration scripts and [Gradle Wrapper](https://docs.gradle.org/4.8/userguide/gradle_wrapper.html?_ga=2.128419721.428200427.1533059957-1761894786.1513880699) will be created. Gradle Wrapper is a stand-alone build program to make sure all users can share the same build environment. I recommend to use wrapper to execute any task like this under our root directory `UVDS`:
+```
+./gradlew [task name]
+```
+We introduce customized properties of this project such as description and version by using `gradle.properties` under `UVDS`.
+```
+touch gradle.properties
+```
+We put description and version into this file at first. So this file looks like:
+```
+description = "Unified Vision Data Service"
+version = "0.0.0"
+```
+You can also put those properties into `build.gradle` but I prefer to group properties into a single file.
