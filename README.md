@@ -86,3 +86,26 @@ description = "Unified Vision Data Service"
 version = "0.0.0"
 ```
 You can also put those properties into `build.gradle` but I prefer to group properties into a single file.
+
+```
+The difference between Gradle plugin, module dependecy and build classpath is:
+1. Gradle plugin is Gradle preset task
+2. module dependecy is the library compiled with your code
+3. build classpath is needed for Gradle
+```
+```
+We can see a lot Gradle script like this:
+buildScript {
+    repositories {
+         mavenCentral()
+    }
+}
+
+repositories {
+     mavenCentral()
+}
+The buildScript block is for gradle script itself and the other is for the project itself. For Spring Boot, with old Gradle, you have to put its plugin in both buildScript and apply() method.
+```
+
+### Reference
+[Gradle Guide](https://guides.gradle.org/creating-new-gradle-builds/?_ga=2.60313384.428200427.1533059957-1761894786.1513880699)

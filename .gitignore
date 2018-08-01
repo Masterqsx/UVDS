@@ -35,3 +35,11 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Gradle files #
+#####################
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+.gradle/
+/build/
