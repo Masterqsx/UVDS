@@ -43,3 +43,7 @@ gradle-app.setting
 .gradletasknamecache
 .gradle/
 /build/
+
+# IDEA files #
+#####################
+.idea/

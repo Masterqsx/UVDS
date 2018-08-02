@@ -6,14 +6,18 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
+jar {
+  baseName = 'UVDS'
+  version = project.properties['version']
+}
+
 repositories {
+  jcenter()
   mavenCentral()
 }
 
 dependencies {
   testImplementation 'junit:junit'
-  
-//  implementation 'org.springframework.boot:spring-boot-dependencies:2.0.3.RELEASE'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-jersey'
 }
 

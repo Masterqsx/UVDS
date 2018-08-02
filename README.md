@@ -104,8 +104,12 @@ buildScript {
 repositories {
      mavenCentral()
 }
-The buildScript block is for gradle script itself and the other is for the project itself. For Spring Boot, with old Gradle, you have to put its plugin in both buildScript and apply() method.
+The buildScript block is for gradle script  itself and the other is for the project itself. For Spring Boot, with old Gradle, you have to put its plugin in both buildScript and apply() method. For new Gradle, just put plugins into plugins block.
 ```
 
 ### Reference
 [Gradle Guide](https://guides.gradle.org/creating-new-gradle-builds/?_ga=2.60313384.428200427.1533059957-1761894786.1513880699)
+
+[Spring Boot Gradle Guide](https://guides.gradle.org/building-spring-boot-2-projects-with-gradle/?_ga=2.98051866.428200427.1533059957-1761894786.1513880699)
+
+[Spring Boot Starter Guide](https://spring.io/guides/gs/spring-boot/#initial)
