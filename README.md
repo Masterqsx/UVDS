@@ -272,3 +272,64 @@ As we mentioned in the previous, Spring Framework is helpful for implementing IO
 [Spring Boot Test](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-testing.html)
 
 [Spring Boot with JerseyTest](https://geowarin.com/a-simple-spring-boot-and-jersey-application/)
+
+## Story 3 - Data Lake Implementation - Publishing Incoming Video into Structured Model
+### Description
+This task is about publishing ingested video into
+a unified data model which will tag each video for future search or classification.
+
+### Instruction
+##### Video Processing basic
+![Video Processing Basic](docs/img/VideoProcessingBasic.png)
+###### 1. Color Space
+RGB color space is pretty straightforward. There is another called YUV color space. This encoding takes human perception into account, defined as luma(Y) and two chrominance(UV). The transformation between RGB and YUV(YCbCr) could be:
+```
+Y = wr*R + wg*G + wb*B
+Cb = wCb*(B - Y)
+Cr = wCr*(R - Y)
+```
+###### 2. Video Compression Standard
+We will use H.264 for this project since it is the most popular video streaming standard. The composition of H.264 compression is:
+![H.264.png](docs/img/H.264.png)
+A image can be divided into different `slices` and `NAL(Network Abstraction Layer)` is a unit that can contain payload or meta data.
+
+`Reference Frames` can be used to compress block with the same frame. `Motion Vectors` can be used for `Block Matching` that can use the stored residual and vector to construct current block.
+
+###### 3. Digital Multimedia Container Format
+**1. MPEG-4 (MP4) Format**  
+The file specification of MP4 looks like this:
+![MP4Format](docs/img/MP4Format.jpg)
+`MoovBox` block stores all meta data for decoding. So the larger the video is, the larger this block is. That is why streaming MP4 file is slow since player needs to download complete `MoovBox` at first.
+
+**2. m3u8 Format**  
+m3u8 (m3u format with UTF-8) file is the indexing file for HTTP Live Streaming. A simple m3u8 indexing file looks like this:
+
+![m3u8Format](docs/img/m3u8Format.jpg)
+
+Some common keywords look like this:
+```
+#EXTM3U                     m3u header, at the first line
+#EXT-X-MEDIA-SEQUENCE       The index of the first TS file
+#EXT-X-TARGETDURATION       The longest time of TS files
+#EXT-X-ALLOW-CACHE          Cache allowed
+#EXT-X-ENDLIST              End of m3u file
+#EXTINF                     Extra info about the TS files
+```
+
+**3. MPEG-Transport Stream(TS) Format**
+The basic element of TS format is TS packet. One TS packet could be PAT packet, PMT packet, multiple Audio packets, multiple Video packets,
+
+##### Video Stream Protocol
+
+### Reference
+[RGB, YUV](https://blog.csdn.net/leixiaohua1020/article/details/50534150)
+
+[Video Encoding](https://blog.csdn.net/leixiaohua1020/article/details/18893769)
+
+[Digital Processing In All](http://www.samirchen.com/video-concept/)
+
+[Virtual HLS with MP4, m3u8](https://www.cnblogs.com/haibindev/p/8427503.html)
+
+[HLS VS DASH VS HDS VS RTMP](https://www.jianshu.com/p/8b803ba0e526)
+
+[MTEG-2 TS](https://blog.csdn.net/NB_vol_1/article/details/57416971)
