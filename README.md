@@ -317,9 +317,16 @@ Some common keywords look like this:
 ```
 
 **3. MPEG-Transport Stream(TS) Format**
-The basic element of TS format is TS packet. One TS packet could be PAT packet, PMT packet, multiple Audio packets, multiple Video packets,
+The basic element of TS format is TS packet. One TS packet could be PAT packet, PMT packet, multiple Audio packets, multiple Video packets and other info packets.
+
+The overview of TS stream decoding is:
+1. Find PAT packet with PID 0x0
+2. Use program_map_PID to find PID of PMT packets
+3. PMT packet contain Video/Audio packets' PID their codec(determine decoder) and PCR packets' PID.
+4. Video/Audio packets are organized by PES format and one frame is one PES packet. Since one TS packet is only 184 Bytes but one frame is definitely larger than that, one PES packet is distributed in multiple TS packets.
 
 ##### Video Stream Protocol
+**1. HLS**
 
 ### Reference
 [RGB, YUV](https://blog.csdn.net/leixiaohua1020/article/details/50534150)
