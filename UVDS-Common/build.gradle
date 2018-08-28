@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+}
+
+jar {
+    baseName = 'UVDS-Common'
+    version = project.properties['version']
+}
+
+dependencies {
+}
