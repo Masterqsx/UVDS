@@ -1,6 +1,6 @@
-package com.parabird.data_lake.onboarding.db.dao;
+package com.parabird.uvds.dataLake.onboarding.db.dao;
 
-import com.parabird.data_lake.onboarding.db.model.Media;
+import com.parabird.uvds.dataLake.onboarding.db.model.Media;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

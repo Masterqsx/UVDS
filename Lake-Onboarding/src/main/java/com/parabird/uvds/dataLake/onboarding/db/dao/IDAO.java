@@ -1,4 +1,4 @@
-package com.parabird.data_lake.onboarding.db.dao;
+package com.parabird.uvds.dataLake.onboarding.db.dao;
 
 import java.util.List;
 

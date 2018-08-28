@@ -1,8 +1,8 @@
-package com.parabird.data_lake.onboarding.db.api;
+package com.parabird.uvds.dataLake.onboarding.db.api;
 
-import com.parabird.data_lake.onboarding.db.dao.IDAO;
-import com.parabird.data_lake.onboarding.db.model.Media;
-import com.parabird.data_lake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.dao.IDAO;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Media;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -13,7 +13,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id 'org.springframework.boot' version '2.0.3.RELEASE'
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
@@ -27,9 +27,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java:5.1.39'
     implementation 'org.apache.commons:commons-lang3:3.8'
+    implementation project(':UVDS-Common')
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.27'
     testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'
+    testImplementation 'com.h2database:h2:1.4.197'
 }
 
 
@@ -43,12 +46,12 @@ task dbRemove {
             , project.properties['dbPassword']
             , project.properties['dbDriver'])
 
-    gradle.ext.sql.execute(new File('Lake-Onboarding/db/scripts/remove_tables.sql').text)
+    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/remove_tables.sql').text)
 }
 
 task dbCreate {
     mustRunAfter(dbRemove)
-    gradle.ext.sql.execute(new File('Lake-Onboarding/db/scripts/create_database.sql').text)
+    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/create_database.sql').text)
 }
 
 

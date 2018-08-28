@@ -1,6 +1,6 @@
-package com.parabird.data_lake.onboarding.db.dao;
+package com.parabird.uvds.dataLake.onboarding.db.dao;
 
-import com.parabird.data_lake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

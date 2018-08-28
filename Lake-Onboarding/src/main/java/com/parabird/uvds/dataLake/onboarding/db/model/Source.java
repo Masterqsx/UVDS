@@ -1,4 +1,4 @@
-package com.parabird.data_lake.onboarding.db.model;
+package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import org.apache.commons.lang3.StringUtils;
 

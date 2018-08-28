@@ -1,6 +1,4 @@
-package com.parabird.data_lake.onboarding.db.model;
-
-import org.hibernate.annotations.Type;
+package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import javax.persistence.*;
 import java.util.Date;
