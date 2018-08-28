@@ -2,6 +2,7 @@ package com.parabird.data_lake.onboarding.db.dao;
 
 import com.parabird.data_lake.onboarding.db.model.Media;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,7 @@ public class MediaDAO implements IDAO<Media>{
     private EntityManager entityManager;
 
     @Override
+    @Transactional
     public void add(Media mediaRecord) {
         entityManager.persist(mediaRecord);
     }
@@ -24,7 +26,7 @@ public class MediaDAO implements IDAO<Media>{
     }
 
     @Override
-    public void deleteArticle(int id) {
+    public void delete(int id) {
         entityManager.remove(getById(id));
     }
 

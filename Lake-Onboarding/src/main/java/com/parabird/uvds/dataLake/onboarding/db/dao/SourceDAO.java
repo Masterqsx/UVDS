@@ -24,7 +24,7 @@ public class SourceDAO implements IDAO<Source> {
     }
 
     @Override
-    public void deleteArticle(int id) {
+    public void delete(int id) {
         entityManager.remove(getById(id));
     }
 
