@@ -1,7 +1,7 @@
 package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +16,7 @@ public class Media {
     private Source source;
 
     @Column(name = "insertTime")
-    private Date insertTime;
+    private Timestamp insertTime;
 
     public Media() {}
 
@@ -36,11 +36,11 @@ public class Media {
         this.source = source;
     }
 
-    public Date getInsertTime() {
+    public Timestamp  getInsertTime() {
         return insertTime;
     }
 
-    public void setInsertTime(Date insertTime) {
+    public void setInsertTime(Timestamp  insertTime) {
         this.insertTime = insertTime;
     }
 
@@ -75,7 +75,7 @@ public class Media {
     public static class MediaBuilder {
         private int dataId;
         private Source source;
-        private Date insertTime;
+        private Timestamp  insertTime;
 
 
         public MediaBuilder setDataId(int dataId) {
@@ -88,7 +88,7 @@ public class Media {
             return this;
         }
 
-        public MediaBuilder setInsertTime(Date insertTime) {
+        public MediaBuilder setInsertTime(Timestamp insertTime) {
             this.insertTime = insertTime;
             return this;
         }
