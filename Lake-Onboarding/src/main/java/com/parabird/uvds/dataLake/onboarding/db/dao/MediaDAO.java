@@ -1,14 +1,15 @@
 package com.parabird.uvds.dataLake.onboarding.db.dao;
 
 import com.parabird.uvds.dataLake.onboarding.db.model.Media;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
+@Transactional(readOnly = true)
 public class MediaDAO implements IDAO<Media>{
 
     @PersistenceContext
@@ -21,11 +22,13 @@ public class MediaDAO implements IDAO<Media>{
     }
 
     @Override
+    @Transactional
     public void update(Media mediaRecord) {
 
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         entityManager.remove(getById(id));
     }
