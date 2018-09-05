@@ -24,12 +24,12 @@ public class SourceDAO implements IDAO<Source> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         entityManager.remove(getById(id));
     }
 
     @Override
-    public Source getById(int id) {
+    public Source getById(Long id) {
         return entityManager.find(Source.class, id);
     }
 

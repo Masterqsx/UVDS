@@ -44,7 +44,7 @@ public class TestMediaDAO {
 
         List<Media> allRetrieved = dao.retrieveAll();
 
-        assertEquals(allRetrieved.size(), 2);
+        assertEquals(2, allRetrieved.size());
         assertEquals(allRetrieved.get(0), mediaRecord1);
         assertEquals(allRetrieved.get(1), mediaRecord2);
     }
@@ -62,7 +62,29 @@ public class TestMediaDAO {
         dao.delete(allRetrieved.get(1).getDataId());
 
         List<Media> afterDelete = dao.retrieveAll();
-        assertEquals(afterDelete.size(), 0);
+        assertEquals(0, afterDelete.size());
+    }
+
+    @Test
+    @Transactional
+    public void testAddAndGetById3() {
+        dao.add(mediaRecord1);
+        dao.add(mediaRecord2);
+
+        assertEquals(mediaRecord1, dao.getById(mediaRecord1.getDataId()));
+        assertEquals(mediaRecord2, dao.getById(mediaRecord2.getDataId()));
+    }
+
+    @Test
+    @Transactional
+    public void testUpdate4() {
+        mediaRecord2.setDataId(new Long(1));
+        dao.update(mediaRecord1);
+        dao.update(mediaRecord2);
+
+        List<Media> allRetrieved = dao.retrieveAll();
+        assertEquals(1, allRetrieved.size());
+        assertEquals(mediaRecord2, allRetrieved.get(0));
     }
 
 }

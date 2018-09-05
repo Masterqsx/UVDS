@@ -24,23 +24,23 @@ public class MediaDAO implements IDAO<Media>{
     @Override
     @Transactional
     public void update(Media mediaRecord) {
-
+        entityManager.merge(mediaRecord);
     }
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         entityManager.remove(getById(id));
     }
 
     @Override
-    public Media getById(int id) {
+    public Media getById(Long id) {
         return entityManager.find(Media.class, id);
     }
 
     @Override
     public List<Media> retrieveAll() {
-        List<Media> mediaRecords = entityManager.createQuery("FROM Media").getResultList();
+        List<Media> mediaRecords = entityManager.createQuery("FROM Media", Media.class).getResultList();
         return mediaRecords;
     }
 }

@@ -10,7 +10,7 @@ public class Media {
     @Id
     @GeneratedValue
     @Column(name = "dataId")
-    private int dataId;
+    private Long dataId;
 
     @ManyToOne
     private Source source;
@@ -20,11 +20,11 @@ public class Media {
 
     public Media() {}
 
-    public int getDataId() {
+    public Long getDataId() {
         return dataId;
     }
 
-    public void setDataId(int dataId) {
+    public void setDataId(Long dataId) {
         this.dataId = dataId;
     }
 
@@ -58,7 +58,7 @@ public class Media {
         if (this == o) return true;
         if (!(o instanceof Media)) return false;
         Media media = (Media) o;
-        return dataId == media.dataId &&
+        return Objects.equals(dataId, media.dataId) &&
                 Objects.equals(source, media.source) &&
                 Objects.equals(insertTime, media.insertTime);
     }
@@ -73,12 +73,12 @@ public class Media {
     }
 
     public static class MediaBuilder {
-        private int dataId;
+        private Long dataId;
         private Source source;
         private Timestamp  insertTime;
 
 
-        public MediaBuilder setDataId(int dataId) {
+        public MediaBuilder setDataId(Long dataId) {
             this.dataId = dataId;
             return this;
         }

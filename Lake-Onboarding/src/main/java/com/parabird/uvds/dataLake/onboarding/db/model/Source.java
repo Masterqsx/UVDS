@@ -11,7 +11,7 @@ public class Source {
     @Id
     @GeneratedValue
     @Column(name = "sourceId")
-    private int sourceId;
+    private Long sourceId;
 
     @Column(name = "sourceName")
     private String sourceName;
@@ -24,11 +24,11 @@ public class Source {
 
     public Source() {}
 
-    public int getSourceId() {
+    public Long getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(int sourceId) {
+    public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
     }
 
