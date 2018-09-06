@@ -1,9 +1,9 @@
 package com.parabird.uvds.dataLake.onboarding.db.model;
 
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Source")
@@ -19,7 +19,7 @@ public class Source {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "source")
+    @OneToMany(mappedBy = "source", cascade=CascadeType.ALL)
     private List<Media> medias;
 
     public Source() {}
@@ -62,7 +62,68 @@ public class Source {
                 "sourceId=" + sourceId +
                 ", sourceName='" + sourceName + '\'' +
                 ", description='" + description + '\'' +
-                ", medias=" + StringUtils.join(medias) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Source)) return false;
+        Source source = (Source) o;
+        return Objects.equals(sourceId, source.sourceId) &&
+                Objects.equals(sourceName, source.sourceName) &&
+                Objects.equals(description, source.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sourceId, sourceName, description);
+    }
+
+    public static SourceBuilder newSourceBuilder() {
+        return new SourceBuilder();
+    }
+
+    public static final class SourceBuilder {
+        private Long sourceId;
+        private String sourceName;
+        private String description;
+        private List<Media> medias;
+
+        private SourceBuilder() {
+        }
+
+        public static SourceBuilder aSource() {
+            return new SourceBuilder();
+        }
+
+        public SourceBuilder setSourceId(Long sourceId) {
+            this.sourceId = sourceId;
+            return this;
+        }
+
+        public SourceBuilder setSourceName(String sourceName) {
+            this.sourceName = sourceName;
+            return this;
+        }
+
+        public SourceBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public SourceBuilder setMedias(List<Media> medias) {
+            this.medias = medias;
+            return this;
+        }
+
+        public Source build() {
+            Source source = new Source();
+            source.setSourceId(sourceId);
+            source.setSourceName(sourceName);
+            source.setDescription(description);
+            source.setMedias(medias);
+            return source;
+        }
     }
 }

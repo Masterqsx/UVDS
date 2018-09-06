@@ -2,6 +2,7 @@ package com.parabird.uvds.dataLake.onboarding.db.dao;
 
 import com.parabird.uvds.dataLake.onboarding.db.model.Media;
 import com.parabird.uvds.dataLake.onboarding.LakeOnboardingApp;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,16 +25,40 @@ public class TestMediaDAO {
     @Autowired
     private MediaDAO dao;
 
+    @Autowired
+    private SourceDAO sourceDAO;
+
     private static Media mediaRecord1;
     private static Media mediaRecord2;
 
     @Before
     public void setUp() {
-        mediaRecord1 = Media.newBuilder()
-            .setInsertTime(new Timestamp(new Date().getTime()))
+        Source sourceRecord = Source.newSourceBuilder()
+            .setSourceName("sourceName")
+            .setDescription("sourceDesc")
             .build();
-        mediaRecord2 = Media.newBuilder()
+
+        sourceDAO.add(sourceRecord);
+
+        mediaRecord1 = Media.newMediaBuilder()
             .setInsertTime(new Timestamp(new Date().getTime()))
+            .setUid("hashValue1")
+            .setSource(sourceRecord)
+            .setFileName("fileName1")
+            .setFilePath("filePath1")
+            .setTags(new HashMap<String, String>() {{
+                put("tagKey1","tagValue1");
+            }})
+            .build();
+        mediaRecord2 = Media.newMediaBuilder()
+            .setInsertTime(new Timestamp(new Date().getTime()))
+            .setUid("hashValue2")
+            .setSource(sourceRecord)
+            .setFileName("fileName2")
+            .setFilePath("filePath2")
+            .setTags(new HashMap<String, String>() {{
+                put("tagKey2","tagValue2");
+            }})
             .build();
     }
 
@@ -78,8 +104,9 @@ public class TestMediaDAO {
     @Test
     @Transactional
     public void testUpdate4() {
-        mediaRecord2.setDataId(new Long(1));
-        dao.update(mediaRecord1);
+        dao.add(mediaRecord1);
+
+        mediaRecord2.setDataId(mediaRecord1.getDataId());
         dao.update(mediaRecord2);
 
         List<Media> allRetrieved = dao.retrieveAll();
