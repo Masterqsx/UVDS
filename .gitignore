@@ -42,7 +42,8 @@ gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 .gradle/
-**/build/
+build/
+**build/
 
 # IDEA files #
 #####################
