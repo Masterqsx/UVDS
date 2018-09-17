@@ -19,7 +19,7 @@ public class Source {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "source", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "source", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Media> medias;
 
     public Source() {}

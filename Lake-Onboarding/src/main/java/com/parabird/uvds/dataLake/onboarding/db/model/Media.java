@@ -15,7 +15,7 @@ public class Media {
     @Column(name = "dataId")
     private Long dataId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Source source;
 
     @Column(name = "insertTime")

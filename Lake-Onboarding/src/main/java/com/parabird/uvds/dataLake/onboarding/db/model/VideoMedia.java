@@ -58,7 +58,7 @@ public class VideoMedia extends Media{
                 "timeLen=" + timeLen +
                 ", width=" + width +
                 ", height=" + height +
-                ", codec=" + codec +
+                ", codec=" + codec + ", " +
                 super.toString() +
                 '}';
     }

@@ -41,7 +41,7 @@ public class SourceDAO implements IDAO<Source> {
 
     @Override
     public List<Source> retrieveAll() {
-        List<Source> sourceRecords = entityManager.createQuery("FROM Source").getResultList();
+        List<Source> sourceRecords = entityManager.createQuery("FROM Source", Source.class).getResultList();
         return sourceRecords;
     }
 }

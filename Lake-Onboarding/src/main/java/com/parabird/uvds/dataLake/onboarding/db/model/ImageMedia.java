@@ -47,7 +47,8 @@ public class ImageMedia extends Media {
         return "ImageMedia{" +
                 "width=" + width +
                 ", height=" + height +
-                ", format='" + format + '\'' +
+                ", format='" + format + ", " +
+                super.toString() +
                 '}';
     }
 

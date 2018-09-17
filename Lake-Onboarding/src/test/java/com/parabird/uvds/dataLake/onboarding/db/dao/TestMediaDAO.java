@@ -6,6 +6,8 @@ import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,11 +24,10 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = LakeOnboardingApp.class)
 public class TestMediaDAO {
 
-    @Autowired
-    private MediaDAO dao;
+    private Logger logger = LoggerFactory.getLogger(TestMediaDAO.class);
 
     @Autowired
-    private SourceDAO sourceDAO;
+    private MediaDAO dao;
 
     private static Media mediaRecord1;
     private static Media mediaRecord2;
@@ -38,7 +39,7 @@ public class TestMediaDAO {
             .setDescription("sourceDesc")
             .build();
 
-        sourceDAO.add(sourceRecord);
+        //sourceDAO.add(sourceRecord);
 
         mediaRecord1 = Media.newMediaBuilder()
             .setInsertTime(new Timestamp(new Date().getTime()))
@@ -72,7 +73,9 @@ public class TestMediaDAO {
 
         assertEquals(2, allRetrieved.size());
         assertEquals(allRetrieved.get(0), mediaRecord1);
+        logger.info(allRetrieved.get(0).toString());
         assertEquals(allRetrieved.get(1), mediaRecord2);
+        logger.info(allRetrieved.get(1).toString());
     }
 
     @Test
@@ -103,7 +106,7 @@ public class TestMediaDAO {
 
     @Test
     @Transactional
-    public void testUpdate4() {
+    public void testAddAndUpdate4() {
         dao.add(mediaRecord1);
 
         mediaRecord2.setDataId(mediaRecord1.getDataId());
