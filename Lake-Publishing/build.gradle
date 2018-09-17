@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+jar {
+    baseName = 'lake-publishing'
+    version = project.properties['version']
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.apache.commons:commons-lang3:3.8'
+    implementation 'org.apache.hbase:hbase-client:2.1.0'
+    implementation 'org.apache.hbase:hbase:2.1.0'
+    implementation project(':UVDS-Common')
+    implementation project(':Lake-Onboarding')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.27'
+    testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'
+}
+
+task hbaseRemove(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+
+    main = 'com.parabird.uvds.dataLake.publishing.hbase.helper.HBaseDbRemove'
+}
+
+task hbaseCreate(type: JavaExec) {
+    mustRunAfter 'hbaseRemove'
+
+    classpath = sourceSets.test.runtimeClasspath
+
+    main = 'com.parabird.uvds.dataLake.publishing.hbase.helper.HBaseDbCreate'
+}
+
+task hbaseRecreate {
+    dependsOn 'hbaseRemove', 'hbaseCreate'
+}
+
+task datastoreRecreate {
+    dependsOn 'hbaseRecreate'
+}
