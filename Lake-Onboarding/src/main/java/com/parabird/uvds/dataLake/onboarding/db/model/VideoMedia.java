@@ -92,6 +92,7 @@ public class VideoMedia extends Media{
         private String codec;
         private Source source;
         private Timestamp insertTime;
+        private String sourceUid;
         private String uid;
         private String filePath;
         private String fileName;
@@ -139,6 +140,11 @@ public class VideoMedia extends Media{
             return this;
         }
 
+        public VideoMediaBuilder setSourceUid(String sourceUid) {
+            this.sourceUid = sourceUid;
+            return this;
+        }
+
         public VideoMediaBuilder setUid(String uid) {
             this.uid = uid;
             return this;
@@ -168,6 +174,7 @@ public class VideoMedia extends Media{
             videoMedia.setCodec(codec);
             videoMedia.setSource(source);
             videoMedia.setInsertTime(insertTime);
+            videoMedia.setSourceUid(sourceUid);
             videoMedia.setUid(uid);
             videoMedia.setFilePath(filePath);
             videoMedia.setFileName(fileName);

@@ -21,6 +21,9 @@ public class Media {
     @Column(name = "insertTime")
     private Timestamp insertTime;
 
+    @Column(name = "sourceUid")
+    private String sourceUid;
+
     @Column(name = "uid")
     private String uid;
 
@@ -94,12 +97,21 @@ public class Media {
         this.fileName = fileName;
     }
 
+    public String getSourceUid() {
+        return sourceUid;
+    }
+
+    public void setSourceUid(String sourceUid) {
+        this.sourceUid = sourceUid;
+    }
+
     @Override
     public String toString() {
         return "Media{" +
                 "dataId=" + dataId +
                 ", source=" + source +
                 ", insertTime=" + insertTime +
+                ", sourceUid='" + sourceUid + '\'' +
                 ", uid='" + uid + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", fileName='" + fileName + '\'' +
@@ -125,6 +137,7 @@ public class Media {
         return Objects.equals(dataId, media.dataId) &&
                 Objects.equals(source, media.source) &&
                 Objects.equals(insertTime, media.insertTime) &&
+                Objects.equals(sourceUid, media.sourceUid) &&
                 Objects.equals(uid, media.uid) &&
                 Objects.equals(filePath, media.filePath) &&
                 Objects.equals(fileName, media.fileName) &&
@@ -133,7 +146,7 @@ public class Media {
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataId, source, insertTime, uid, filePath, fileName, tags);
+        return Objects.hash(dataId, source, insertTime, sourceUid, uid, filePath, fileName, tags);
     }
 
 
@@ -145,6 +158,7 @@ public class Media {
         private Long dataId;
         private Source source;
         private Timestamp insertTime;
+        private String sourceUid;
         private String uid;
         private String filePath;
         private String fileName;
@@ -169,6 +183,11 @@ public class Media {
 
         public MediaBuilder setInsertTime(Timestamp insertTime) {
             this.insertTime = insertTime;
+            return this;
+        }
+
+        public MediaBuilder setSourceUid(String sourceUid) {
+            this.sourceUid = sourceUid;
             return this;
         }
 
@@ -197,6 +216,7 @@ public class Media {
             media.setDataId(dataId);
             media.setSource(source);
             media.setInsertTime(insertTime);
+            media.setSourceUid(sourceUid);
             media.setUid(uid);
             media.setFilePath(filePath);
             media.setFileName(fileName);

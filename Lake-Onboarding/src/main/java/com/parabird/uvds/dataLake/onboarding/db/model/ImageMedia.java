@@ -79,6 +79,7 @@ public class ImageMedia extends Media {
         private Long dataId;
         private Source source;
         private Timestamp insertTime;
+        private String sourceUid;
         private String uid;
         private String filePath;
         private String fileName;
@@ -121,6 +122,11 @@ public class ImageMedia extends Media {
             return this;
         }
 
+        public ImageMediaBuilder setSourceUid(String sourceUid) {
+            this.sourceUid = sourceUid;
+            return this;
+        }
+
         public ImageMediaBuilder setUid(String uid) {
             this.uid = uid;
             return this;
@@ -149,6 +155,7 @@ public class ImageMedia extends Media {
             imageMedia.setDataId(dataId);
             imageMedia.setSource(source);
             imageMedia.setInsertTime(insertTime);
+            imageMedia.setSourceUid(sourceUid);
             imageMedia.setUid(uid);
             imageMedia.setFilePath(filePath);
             imageMedia.setFileName(fileName);
