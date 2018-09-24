@@ -7,9 +7,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class FileUtils {
@@ -18,7 +16,7 @@ public class FileUtils {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            throw  new IOException("Input file path is not valid!");
+            throw new IOException("Input file path is not valid!");
         }
 
         return file;
@@ -60,14 +58,13 @@ public class FileUtils {
     * If # of column > schema length, it will be trimmed to schema length
     * If # of column < schema length, it will fill with empty string at the end
     */
-    public static List<List<String>> loadCSV(File file, String delimiter) throws FileNotFoundException {
+    public static List<List<String>> loadCSV(File file, String delimiter) throws IOException {
         List<List<String>> lines = new ArrayList<>();
         int schemaLength = -1;
+        String curLine = null;
 
-        Scanner scan = new Scanner(file);
-        while (scan.hasNextLine()) {
-            String curLine = scan.nextLine();
-
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        while ((curLine = reader.readLine()) != null) {
             if (curLine.length() == 0) continue;
 
             List<String> values = new ArrayList<>(Arrays.asList(curLine.split(delimiter)));
@@ -86,6 +83,8 @@ public class FileUtils {
 
             if (schemaLength < 0) schemaLength = values.size();
         }
+        reader.close();
+
         return lines;
     }
 }
