@@ -14,9 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,13 +22,13 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = LakeOnboardingApp.class)
 public class TestMediaDAO {
 
-    private Logger logger = LoggerFactory.getLogger(TestMediaDAO.class);
+    private static Logger logger = LoggerFactory.getLogger(TestMediaDAO.class);
 
     @Autowired
-    private MediaDAO dao;
+    MediaDAO dao;
 
-    private static Media mediaRecord1;
-    private static Media mediaRecord2;
+    private Media mediaRecord1;
+    private Media mediaRecord2;
 
     @Before
     public void setUp() {
@@ -39,10 +37,9 @@ public class TestMediaDAO {
             .setDescription("sourceDesc")
             .build();
 
-        //sourceDAO.add(sourceRecord);
-
         mediaRecord1 = Media.newMediaBuilder()
             .setInsertTime(new Timestamp(new Date().getTime()))
+            .setSourceUid("sourceUid1")
             .setUid("hashValue1")
             .setSource(sourceRecord)
             .setFileName("fileName1")
@@ -53,6 +50,7 @@ public class TestMediaDAO {
             .build();
         mediaRecord2 = Media.newMediaBuilder()
             .setInsertTime(new Timestamp(new Date().getTime()))
+            .setSourceUid("sourceUid2")
             .setUid("hashValue2")
             .setSource(sourceRecord)
             .setFileName("fileName2")
@@ -66,10 +64,10 @@ public class TestMediaDAO {
     @Test
     @Transactional
     public void testAddAndRetrieveAll1() {
-        dao.add(mediaRecord1);
-        dao.add(mediaRecord2);
+        dao.saveAndFlush(mediaRecord1);
+        dao.saveAndFlush(mediaRecord2);
 
-        List<Media> allRetrieved = dao.retrieveAll();
+        List<Media> allRetrieved = dao.findAll();
 
         assertEquals(2, allRetrieved.size());
         assertEquals(allRetrieved.get(0), mediaRecord1);
@@ -81,40 +79,39 @@ public class TestMediaDAO {
     @Test
     @Transactional
     public void testAddAndDelete2() {
-        dao.add(mediaRecord1);
-        dao.add(mediaRecord2);
+        dao.saveAndFlush(mediaRecord1);
+        dao.saveAndFlush(mediaRecord2);
 
-        List<Media> allRetrieved = dao.retrieveAll();
+        List<Media> allRetrieved = dao.findAll();
         assertEquals(allRetrieved.size(), 2);
 
-        dao.delete(allRetrieved.get(0).getDataId());
-        dao.delete(allRetrieved.get(1).getDataId());
+        dao.deleteById(allRetrieved.get(0).getDataId());
+        dao.deleteById(allRetrieved.get(1).getDataId());
 
-        List<Media> afterDelete = dao.retrieveAll();
+        List<Media> afterDelete = dao.findAll();
         assertEquals(0, afterDelete.size());
     }
 
     @Test
     @Transactional
     public void testAddAndGetById3() {
-        dao.add(mediaRecord1);
-        dao.add(mediaRecord2);
+        dao.saveAndFlush(mediaRecord1);
+        dao.saveAndFlush(mediaRecord2);
 
-        assertEquals(mediaRecord1, dao.getById(mediaRecord1.getDataId()));
-        assertEquals(mediaRecord2, dao.getById(mediaRecord2.getDataId()));
+        assertEquals(mediaRecord1, dao.findById(mediaRecord1.getDataId()).get());
+        assertEquals(mediaRecord2, dao.findById(mediaRecord2.getDataId()).get());
     }
 
     @Test
     @Transactional
     public void testAddAndUpdate4() {
-        dao.add(mediaRecord1);
+        dao.saveAndFlush(mediaRecord1);
 
         mediaRecord2.setDataId(mediaRecord1.getDataId());
-        dao.update(mediaRecord2);
+        dao.saveAndFlush(mediaRecord2);
 
-        List<Media> allRetrieved = dao.retrieveAll();
+        List<Media> allRetrieved = dao.findAll();
         assertEquals(1, allRetrieved.size());
         assertEquals(mediaRecord2, allRetrieved.get(0));
     }
-
 }

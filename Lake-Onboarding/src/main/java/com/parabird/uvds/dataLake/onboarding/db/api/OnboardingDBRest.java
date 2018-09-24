@@ -1,8 +1,7 @@
 package com.parabird.uvds.dataLake.onboarding.db.api;
 
-import com.parabird.uvds.dataLake.onboarding.db.dao.IDAO;
-import com.parabird.uvds.dataLake.onboarding.db.model.Source;
-import com.parabird.uvds.dataLake.onboarding.db.model.Media;
+import com.parabird.uvds.dataLake.onboarding.db.dao.MediaDAO;
+import com.parabird.uvds.dataLake.onboarding.db.dao.SourceDAO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,10 @@ import javax.ws.rs.core.Response;
 public class OnboardingDBRest {
 
     @Autowired
-    IDAO<Media> mediaDao;
+    MediaDAO mediaDao;
 
     @Autowired
-    IDAO<Source> sourceDao;
+    SourceDAO sourceDao;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -33,6 +32,6 @@ public class OnboardingDBRest {
     @Path("/media/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllMedia() {
-        return Response.status(200).entity(StringUtils.join(mediaDao.retrieveAll())).build();
+        return Response.status(200).entity(StringUtils.join(mediaDao.findAll())).build();
     }
 }

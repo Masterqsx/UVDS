@@ -55,9 +55,9 @@ public class TestSourceDAO {
     @Test
     @Transactional
     public void testAddAndRetrieveAll1() {
-        sourceDao.add(sourceRecord);
+        sourceDao.saveAndFlush(sourceRecord);
 
-        List<Source> allSources = sourceDao.retrieveAll();
+        List<Source> allSources = sourceDao.findAll();
 
         assertEquals(1, allSources.size());
         assertEquals(sourceRecord, allSources.get(0));
@@ -73,35 +73,53 @@ public class TestSourceDAO {
     @Test
     @Transactional
     public void testAddAndDelete2() {
-        sourceDao.add(sourceRecord);
+        sourceDao.saveAndFlush(sourceRecord);
 
-        List<Source> allSources = sourceDao.retrieveAll();
+        List<Source> allSources = sourceDao.findAll();
         assertEquals(1, allSources.size());
 
-        sourceDao.delete(allSources.get(0).getSourceId());
+        sourceDao.deleteById(allSources.get(0).getSourceId());
 
-        List<Source> afterDelete = sourceDao.retrieveAll();
+        List<Source> afterDelete = sourceDao.findAll();
         assertEquals(0, afterDelete.size());
     }
 
     @Test
     @Transactional
     public void testAddAndGetById3() {
-        sourceDao.add(sourceRecord);
+        sourceDao.saveAndFlush(sourceRecord);
 
-        assertEquals(sourceRecord, sourceDao.getById(sourceRecord.getSourceId()));
+        assertEquals(sourceRecord, sourceDao.findById(sourceRecord.getSourceId()).get());
     }
 
     @Test
     @Transactional
     public void testAddAndUpdate4() {
-        sourceDao.add(sourceRecord);
+        sourceDao.saveAndFlush(sourceRecord);
 
         sourceRecord.setDescription("sourceDesc_updated");
 
-        sourceDao.update(sourceRecord);
+        sourceDao.saveAndFlush(sourceRecord);
 
-        List<Source> afterUpdate = sourceDao.retrieveAll();
+        List<Source> afterUpdate = sourceDao.findAll();
+        assertEquals(1, afterUpdate.size());
+        assertEquals(sourceRecord, afterUpdate.get(0));
+    }
+
+    @Test
+    @Transactional
+    public void testAddAndUpdateMedia5() {
+        sourceDao.saveAndFlush(sourceRecord);
+
+        List<Source> allRetrieved = sourceDao.findAll();
+        for (Source source : allRetrieved) {
+            for (Media meida : source.getMedias()) {
+                meida.setFileName("updated");
+            }
+            sourceDao.saveAndFlush(source);
+        }
+
+        List<Source> afterUpdate = sourceDao.findAll();
         assertEquals(1, afterUpdate.size());
         assertEquals(sourceRecord, afterUpdate.get(0));
     }

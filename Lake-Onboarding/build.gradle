@@ -35,6 +35,11 @@ dependencies {
     testImplementation 'com.h2database:h2:1.4.197'
 }
 
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+}
 
 task dbRemove {
     def mysql = buildscript.configurations.classpath.find { it.toString().contains("mysql-connector-java") }
@@ -46,12 +51,14 @@ task dbRemove {
             , project.properties['dbPassword']
             , project.properties['dbDriver'])
 
-    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/remove_tables.sql').text)
+    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/remove_database.sql').text)
+    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/remove_testdatabase.sql').text)
 }
 
 task dbCreate {
     mustRunAfter(dbRemove)
     gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/create_database.sql').text)
+    gradle.ext.sql.execute(new File(project.rootDir.toString() + '/Lake-Onboarding/db/scripts/create_testdatabase.sql').text)
 }
 
 

@@ -2,13 +2,16 @@ package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @Entity
-public class ImageMedia extends Media {
+public class ImageMedia extends Media implements Serializable {
+    private static final long serialVersionUID = -334976281690242352L;
+
     @Column(name = "width")
     private Integer width;
 
@@ -40,6 +43,50 @@ public class ImageMedia extends Media {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public ImageMedia clone() {
+        return ImageMedia.newImageMediaBuilder()
+            .setDataId(getDataId())
+            .setSource(Source.newSourceBuilder()
+                .setSourceId(getSource().getSourceId())
+                .setSourceName(getSource().getSourceName())
+                .setDescription(getSource().getDescription())
+                .build())
+            .setInsertTime(getInsertTime())
+            .setUid(getUid())
+            .setFilePath(getFilePath())
+            .setTags(new HashMap<>(getTags()))
+            .setFileName(getFileName())
+            .setSourceUid(getSourceUid())
+            .setWidth(getWidth())
+            .setHeight(getHeight())
+            .setFormat(getFormat())
+            .build();
+    }
+
+    public ImageMedia merge(ImageMedia other) {
+        if (getDataId() == null) setDataId(other.getDataId());
+        if (getSource() == null) {
+            if (other.getSource() != null) {
+                setSource(Source.newSourceBuilder()
+                        .setSourceId(other.getSource().getSourceId())
+                        .setSourceName(other.getSource().getSourceName())
+                        .setDescription(other.getSource().getDescription())
+                        .build());
+            }
+        }
+        if (getInsertTime() == null) setInsertTime(other.getInsertTime());
+        if (getUid() == null) setUid(other.getUid());
+        if (getFilePath() == null) setFilePath(other.getFilePath());
+        if (getTags() == null) setTags(new HashMap<>(other.getTags()));
+        if (getFileName() == null) setFileName(other.getFileName());
+        if (getSourceUid() == null) setSourceUid(other.getSourceUid());
+        if (getWidth() == null) setWidth(other.getWidth());
+        if (getHeight() == null) setHeight(other.getHeight());
+        if (getFormat() == null) setFormat(other.getFormat());
+
+        return this;
     }
 
     @Override

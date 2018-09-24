@@ -1,13 +1,16 @@
 package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @Entity
-public class VideoMedia extends Media{
+public class VideoMedia extends Media implements Serializable {
+    private static final long serialVersionUID = 5757333303835101671L;
+
     @Column(name = "timeLen")
     private Integer timeLen;
 

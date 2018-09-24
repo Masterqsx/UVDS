@@ -1,6 +1,7 @@
 package com.parabird.uvds.dataLake.onboarding.db.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "MEDIA")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Media {
+public class Media implements Serializable {
+
+    private static final long serialVersionUID = -1768967866769157514L;
+
     @Id
     @GeneratedValue
     @Column(name = "dataId")

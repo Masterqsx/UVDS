@@ -2,12 +2,15 @@ package com.parabird.uvds.dataLake.onboarding.db.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Source")
-public class Source {
+public class Source implements Serializable {
+    private static final long serialVersionUID = 4577341449072703351L;
+
     @Id
     @GeneratedValue
     @Column(name = "sourceId")
