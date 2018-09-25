@@ -14,12 +14,7 @@ import java.util.Map;
 
 public class DiskExtractor implements IExtractor {
 
-    private List<DiskSourceFile> sourceMedia;
-
-    /** Here each sourceMetaData is usually a table like file*/
-    private List<DiskSourceMetaData> sourceMetaDatas;
-
-    void loadSourceMedia(String filePath, MediaType mediaType, Map<String, String> customTags) throws IOException {
+    public static DiskSourceFile extractSourceMedia(String filePath, MediaType mediaType, Map<String, String> customTags) throws IOException {
         File file = FileUtils.loadFile(filePath);
 
         Map<String, String> fileTags = FileUtils.loadFileAndMetaInfo(file);
@@ -40,14 +35,14 @@ public class DiskExtractor implements IExtractor {
                 break;
         }
 
-        sourceMedia.add(DiskSourceFile.newDiskSourceFileBuilder()
-            .setFileAbsolutePath(fileTags.get("fileAbsolutePath"))
-            .setTags(fileTags)
-            .build());
+        return DiskSourceFile.newDiskSourceFileBuilder()
+                .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
+                .setTags(fileTags)
+                .build();
     }
 
     /** This method load Meta data file as a table */
-    void loadSourceMetaData(String filePath, MediaType mediaType) throws IOException {
+    public static DiskSourceMetaData extractSourceMetaData(String filePath, MediaType mediaType) throws IOException {
         File file = FileUtils.loadFile(filePath);
 
         Map<String, String> fileTags = FileUtils.loadFileAndMetaInfo(file);
@@ -68,12 +63,12 @@ public class DiskExtractor implements IExtractor {
             throw new IOException("The source meta data file can not be parsed!");
         }
 
-        sourceMetaDatas.add(DiskSourceMetaData.newDiskSourceMetaDataBuilder()
-            .setFileAbsolutePath(fileTags.get("fileAbsolutePath"))
-            .setTags(fileTags)
-            .setSchema(lines.get(0))
-            .setRecords(lines.size() > 1 ? lines.subList(1, lines.size()) : new ArrayList<>())
-            .build());
+        return DiskSourceMetaData.newDiskSourceMetaDataBuilder()
+                .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
+                .setTags(fileTags)
+                .setSchema(lines.get(0))
+                .setRecords(lines.size() > 1 ? lines.subList(1, lines.size()) : new ArrayList<>())
+                .build();
     }
 
 }

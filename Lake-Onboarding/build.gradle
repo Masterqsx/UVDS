@@ -17,8 +17,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
+bootJar {
+    enabled = false
+}
+
 jar {
-    baseName = 'lake-onboarding'
+    enabled = true
+    baseName = 'Lake-Onboarding'
     version = project.properties['version']
 }
 
@@ -33,12 +38,6 @@ dependencies {
     testImplementation 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.27'
     testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'
     testImplementation 'com.h2database:h2:1.4.197'
-}
-
-test {
-    testLogging {
-        showStandardStreams = true
-    }
 }
 
 task dbRemove {

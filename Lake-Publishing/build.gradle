@@ -7,18 +7,22 @@ plugins {
 }
 
 jar {
-    baseName = 'lake-publishing'
+    baseName = 'Lake-Publishing'
     version = project.properties['version']
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.apache.commons:commons-lang3:3.8'
+    implementation 'commons-io:commons-io:2.6'
     implementation 'org.apache.hbase:hbase-client:2.1.0'
     implementation 'org.apache.hbase:hbase:2.1.0'
-    implementation project(':UVDS-Common')
     implementation project(':Lake-Onboarding')
+    implementation project(':UVDS-Common')
 
+    testImplementation 'org.slf4j:slf4j-api:1.7.25'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.27'
     testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'

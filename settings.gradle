@@ -1,6 +1,6 @@
 include "Hello-World"
+include "Lake-Publishing"
 include "Lake-Onboarding"
 include "UVDS-Common"
-include "Lake-Publishing"
 
 rootProject.name = 'UVDS'
