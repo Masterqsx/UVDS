@@ -12,6 +12,10 @@ import java.util.*;
 
 public class FileUtils {
 
+    public static final String FILE_PATH = "fileAbsolutePath";
+    public static final String FILE_SIZE = "fileSize";
+    public static final String FILE_EXTEN = "fileExtension";
+
     public static File loadFile(String filePath) throws IOException {
         File file = new File(filePath);
 
@@ -25,11 +29,11 @@ public class FileUtils {
     public static Map<String, String> loadFileAndMetaInfo(File file) throws IOException {
         Map<String, String> tags = new HashMap<>();
 
-        tags.put("fileAbsolutePath", file.getCanonicalPath());
+        tags.put(FILE_PATH, file.getCanonicalPath());
 
-        tags.put("fileSize", Long.toString(file.length()));
+        tags.put(FILE_SIZE, Long.toString(file.length()));
 
-        tags.put("fileExtension", FilenameUtils.getExtension(file.getCanonicalPath()));
+        tags.put(FILE_EXTEN, FilenameUtils.getExtension(file.getCanonicalPath()));
 
         return tags;
     }
