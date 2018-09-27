@@ -20,8 +20,10 @@ public class PublishingMonitorTask extends TimerTask {
 
     @Override
     public void run() {
+        logger.info("**************");
         for (ITask task : tasks) {
-            logger.info(task.getClass().getSimpleName() + " have completed [" + task.getCount().toString() + "] iterations");
+            logger.info(task.getClass().getSimpleName() + " completed [" + task.getCount().toString() + "] works");
         }
+        logger.info("**************");
     }
 }
