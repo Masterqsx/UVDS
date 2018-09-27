@@ -13,15 +13,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class OpenImagesDatasetTransformer implements ITransformer {
+public class OpenImagesTransformer implements ITransformer {
 
+    private static final String SOURCE_NAME = "OpenImagesV4";
+
+    private static final String SOURCE_DESC = "Open Images V4 at https://storage.googleapis.com/openimages/web/download.html";
     /** Transformer is data set specific
     *   Given File Path "*file.txt"
     *   FileName is "file.txt"
     *   SourceUid is "file" which is specific for Open Images data set
     **/
     // TODO be able to fill image related fields from DiskSourceFile
-    public static ImageMedia transformSourceImageMediaOpenImages(DiskSourceFile sourceFile, String SourceName, String SourceDesc) {
+    public static ImageMedia transformSourceImageMediaOpenImages(DiskSourceFile sourceFile) {
         ImageMedia trasformed = ImageMedia.newImageMediaBuilder()
             .setInsertTime(new Timestamp(new Date().getTime()))
             .setFilePath(sourceFile.getFileAbsolutePath())
@@ -29,8 +32,8 @@ public class OpenImagesDatasetTransformer implements ITransformer {
             .setSourceUid(FilenameUtils.getBaseName(sourceFile.getFileAbsolutePath()))
             .setTags(sourceFile.getTags())
             .setSource(Source.newSourceBuilder()
-                    .setSourceName(SourceName)
-                    .setDescription(SourceDesc)
+                    .setSourceName(SOURCE_NAME)
+                    .setDescription(SOURCE_DESC)
                     .build()
             )
             .build();
@@ -44,6 +47,11 @@ public class OpenImagesDatasetTransformer implements ITransformer {
             ImageMedia cur = ImageMedia.newImageMediaBuilder()
                 .setSourceUid(line.get(0))
                 .setTags(new HashMap<>())
+                .setSource(Source.newSourceBuilder()
+                        .setSourceName(SOURCE_NAME)
+                        .setDescription(SOURCE_DESC)
+                        .build()
+                )
                 .build();
 
             for (int i = 1; i < line.size(); i++) {
