@@ -6,6 +6,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
+
 jar {
     baseName = 'Lake-Publishing'
     version = project.properties['version']
@@ -21,11 +22,14 @@ dependencies {
     implementation project(':Lake-Onboarding')
     implementation project(':UVDS-Common')
 
-    testImplementation 'org.slf4j:slf4j-api:1.7.25'
-    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.glassfish.jersey.test-framework:jersey-test-framework-core:2.27'
     testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'
+}
+
+configurations.all {
+    exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
 }
 
 task hbaseRemove(type: JavaExec) {
