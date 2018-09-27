@@ -1,6 +1,8 @@
 package com.parabird.uvds.dataLake.onboarding.db.model;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +14,7 @@ public class Source implements Serializable {
     private static final long serialVersionUID = 4577341449072703351L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "sourceId")
     private Long sourceId;
 
