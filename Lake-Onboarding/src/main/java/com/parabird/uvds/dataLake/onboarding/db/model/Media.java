@@ -19,7 +19,7 @@ public class Media implements Serializable {
     @Column(name = "dataId")
     private Long dataId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Source source;
 
     @Column(name = "insertTime")

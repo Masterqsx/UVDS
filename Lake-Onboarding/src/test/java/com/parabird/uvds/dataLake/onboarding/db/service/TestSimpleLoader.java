@@ -41,6 +41,10 @@ public class TestSimpleLoader {
 
     ImageMedia imageMedia2;
 
+    ImageMedia imageMedia3;
+
+    ImageMedia imageMedia4;
+
     @Before
     public void setUp() {
         Source sourceRecord = Source.newSourceBuilder()
@@ -63,7 +67,9 @@ public class TestSimpleLoader {
         imageMedia2 = ImageMedia.newImageMediaBuilder()
                 .setInsertTime(new Timestamp(new Date().getTime()))
                 .setSourceUid("sourceUid")
-                .setSource(sourceRecord)
+                .setSource(Source.newSourceBuilder()
+                    .setSourceName(sourceRecord.getSourceName())
+                    .build())
                 .setFileName("fileName2")
                 .setFilePath("filePath2")
                 .setTags(new HashMap<String, String>() {{
@@ -71,21 +77,49 @@ public class TestSimpleLoader {
                 }})
                 .setFormat("format2")
                 .build();
+        imageMedia3 = ImageMedia.newImageMediaBuilder()
+                .setInsertTime(new Timestamp(new Date().getTime()))
+                .setSourceUid("sourceUid")
+                .setFileName("fileName3")
+                .setFilePath("filePath3")
+                .setTags(new HashMap<String, String>() {{
+                    put("tagKey3","tagValue3");
+                }})
+                .setFormat("format3")
+                .build();
+        imageMedia4 = ImageMedia.newImageMediaBuilder()
+                .setInsertTime(new Timestamp(new Date().getTime()))
+                .setSourceUid("sourceUid")
+                .setSource(Source.newSourceBuilder()
+                    .setSourceName("otherSourceName")
+                    .build())
+                .setFileName("fileName4")
+                .setFilePath("filePath4")
+                .setTags(new HashMap<String, String>() {{
+                    put("tagKey4","tagValue4");
+                }})
+                .setFormat("format4")
+                .build();
+
     }
 
     @Test
     @Transactional
     public void testUpdateImageMediaBySourceUid() {
-        loader.saveImageMediaBySourceUid(imageMedia1);
-        loader.saveImageMediaBySourceUid(imageMedia2);
+        loader.saveImageMediaBySource(imageMedia1);
+        loader.saveImageMediaBySource(imageMedia2);
+        loader.saveImageMediaBySource(imageMedia3);
+        loader.saveImageMediaBySource(imageMedia4);
 
 
         List<ImageMedia> retrievedImageMedia = imageDao.findAll();
-        assertEquals(1, retrievedImageMedia.size());
-        logger.info(retrievedImageMedia.get(0).toString());
+        assertEquals(3, retrievedImageMedia.size());
+        for (ImageMedia media : retrievedImageMedia) {
+            logger.info(media.toString());
+        }
 
         List<Source> retrievedSource = sourceDao.findAll();
-        assertEquals(1, retrievedSource.size());
+        assertEquals(2, retrievedSource.size());
 
     }
 }

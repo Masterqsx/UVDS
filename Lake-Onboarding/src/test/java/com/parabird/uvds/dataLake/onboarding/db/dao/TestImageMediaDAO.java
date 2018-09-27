@@ -32,10 +32,11 @@ public class TestImageMediaDAO {
 
     private ImageMedia mediaRecord1;
     private ImageMedia mediaRecord2;
+    private Source sourceRecord;
 
     @Before
     public void setUp() {
-        Source sourceRecord = Source.newSourceBuilder()
+        sourceRecord = Source.newSourceBuilder()
                 .setSourceName("sourceName")
                 .setDescription("sourceDesc")
                 .build();
@@ -112,12 +113,18 @@ public class TestImageMediaDAO {
                 .setTags(addTags1)
                 .build();
 
+            addMedia1.merge(mediaRecord1);
+
             addMedia1.getTags().putAll(media.getTags());
 
             dao.saveAndFlush(addMedia1);
         }
 
         targetMedia = dao.findBySourceUid(mediaRecord1.getSourceUid());
+
+        targetMedia.forEach((ImageMedia media) -> logger.info(media.toString()));
+
+        targetMedia = dao.findBySourceUidAndSource_SourceName(mediaRecord1.getSourceUid(), sourceRecord.getSourceName());
 
         targetMedia.forEach((ImageMedia media) -> logger.info(media.toString()));
     }

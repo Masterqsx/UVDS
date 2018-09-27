@@ -1,7 +1,9 @@
 package com.parabird.uvds.dataLake.onboarding.db.service;
 
 import com.parabird.uvds.dataLake.onboarding.db.dao.ImageMediaDAO;
+import com.parabird.uvds.dataLake.onboarding.db.dao.SourceDAO;
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +19,38 @@ public class SimpleLoader {
     @Autowired
     ImageMediaDAO imageDao;
 
+    @Autowired
+    SourceDAO sourceDAO;
+
+
+    private void fillManagedSource(ImageMedia record) {
+        List<Source> sources = sourceDAO.findBySourceName(
+                Optional.ofNullable(record.getSource())
+                        .map(Source::getSourceName)
+                        .orElse(null)
+        );
+
+        //The sourceName field in Source is unique, we only need the first one
+        if (!sources.isEmpty()) {
+            record.setSource(sources.get(0));
+        }
+    }
+
     /** This method will replace the current fields with the fields in new one other than tags.
      * Tags will be merged.
      * @param record
      */
-    public void saveImageMediaBySourceUid(ImageMedia record) {
+    public void saveImageMediaBySource(ImageMedia record) {
         List<ImageMedia> imageMedias = Optional
             .ofNullable(
-                imageDao.findBySourceUid(record.getSourceUid())
+                imageDao.findBySourceUidAndSource_SourceName(record.getSourceUid()
+                    , Optional.ofNullable(
+                        record.getSource()
+                        ).map(Source::getSourceName).orElse(null))
                 )
             .orElse(new ArrayList<>());
+
+        fillManagedSource(record);
 
         if (imageMedias.isEmpty()) {
             imageDao.saveAndFlush(record);

@@ -48,7 +48,7 @@ public class ImageMedia extends Media implements Serializable {
     public ImageMedia clone() {
         return ImageMedia.newImageMediaBuilder()
             .setDataId(getDataId())
-            .setSource(Source.newSourceBuilder()
+            .setSource(getSource() == null ? null : Source.newSourceBuilder()
                 .setSourceId(getSource().getSourceId())
                 .setSourceName(getSource().getSourceName())
                 .setDescription(getSource().getDescription())

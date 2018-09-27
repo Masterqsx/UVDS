@@ -16,7 +16,7 @@ public class Source implements Serializable {
     @Column(name = "sourceId")
     private Long sourceId;
 
-    @Column(name = "sourceName")
+    @Column(name = "sourceName", unique = true)
     private String sourceName;
 
     @Column(name = "description")

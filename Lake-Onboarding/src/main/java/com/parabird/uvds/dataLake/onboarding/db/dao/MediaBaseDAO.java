@@ -1,6 +1,7 @@
 package com.parabird.uvds.dataLake.onboarding.db.dao;
 
 import com.parabird.uvds.dataLake.onboarding.db.model.Media;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -15,4 +16,7 @@ public interface MediaBaseDAO<T extends Media> extends JpaRepository<T, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public List<T> findBySourceUid(String sourceUid);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public List<T> findBySourceUidAndSource_SourceName(String sourceUid, String sourceName);
 }
