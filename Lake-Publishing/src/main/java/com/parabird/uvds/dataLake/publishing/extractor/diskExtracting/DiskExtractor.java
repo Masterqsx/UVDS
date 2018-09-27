@@ -1,9 +1,9 @@
-package com.parabird.uvds.dataLake.publishing.diskPublishing;
+package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting;
 
 import com.parabird.uvds.common.enums.MediaType;
 import com.parabird.uvds.common.utils.FileUtils;
-import com.parabird.uvds.dataLake.publishing.diskPublishing.sourceStructure.DiskSourceFile;
-import com.parabird.uvds.dataLake.publishing.diskPublishing.sourceStructure.DiskSourceMetaData;
+import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceFile;
+import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceMetaData;
 import com.parabird.uvds.dataLake.publishing.extractor.IExtractor;
 
 import java.io.File;
@@ -14,9 +14,7 @@ import java.util.Map;
 
 public class DiskExtractor implements IExtractor {
 
-    public static DiskSourceFile extractSourceMedia(String filePath, MediaType mediaType, Map<String, String> customTags) throws IOException {
-        File file = FileUtils.loadFile(filePath);
-
+    public static DiskSourceFile extractSourceMedia(File file, MediaType mediaType, Map<String, String> customTags) throws IOException {
         Map<String, String> fileTags = FileUtils.loadFileAndMetaInfo(file);
 
         /** customTags can be provided by caller itself*/
@@ -39,6 +37,12 @@ public class DiskExtractor implements IExtractor {
                 .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
                 .setTags(fileTags)
                 .build();
+    }
+
+    public static DiskSourceFile extractSourceMedia(String filePath, MediaType mediaType, Map<String, String> customTags) throws IOException {
+        File file = FileUtils.loadFile(filePath);
+
+        return extractSourceMedia(file, mediaType, customTags);
     }
 
     /** This method load Meta data file as a table */
