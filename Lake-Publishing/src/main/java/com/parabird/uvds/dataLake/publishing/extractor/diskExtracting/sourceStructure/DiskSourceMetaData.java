@@ -1,4 +1,4 @@
-package com.parabird.uvds.dataLake.publishing.diskPublishing.sourceStructure;
+package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +25,15 @@ public class DiskSourceMetaData extends DiskSourceFile {
 
     public void setRecords(List<List<String>> records) {
         this.records = records;
+    }
+
+    @Override
+    public String toString() {
+        return "DiskSourceMetaData{" +
+                "schema=" + schema +
+                ", records=" + records +
+                ", " + super.toString() +
+                "}";
     }
 
     public static DiskSourceMetaDataBuilder newDiskSourceMetaDataBuilder() {

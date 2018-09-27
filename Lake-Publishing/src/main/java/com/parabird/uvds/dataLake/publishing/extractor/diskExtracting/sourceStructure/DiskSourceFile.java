@@ -1,4 +1,4 @@
-package com.parabird.uvds.dataLake.publishing.diskPublishing.sourceStructure;
+package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure;
 
 
 import java.util.Map;
@@ -24,6 +24,14 @@ public class DiskSourceFile{
 
     public void setTags(Map<String, String> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "DiskSourceFile{" +
+                "fileAbsolutePath='" + fileAbsolutePath + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 
     public static DiskSourceFileBuilder newDiskSourceFileBuilder() {
