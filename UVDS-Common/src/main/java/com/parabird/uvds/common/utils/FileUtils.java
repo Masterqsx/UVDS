@@ -92,4 +92,25 @@ public class FileUtils {
         return lines;
     }
 
+    public static List<Map.Entry<String, String>> loadCSVOneRecordAsMap(BufferedReader reader, String delimiter, String[] schema) throws IOException {
+        List<Map.Entry<String, String>> tags = null;
+
+        String curLine = null;
+        if ((curLine = reader.readLine()) != null) {
+            if (curLine.length() != 0) {
+                String[] values = curLine.split(delimiter);
+
+                tags = new ArrayList<>();
+
+                int end = Integer.min(schema.length, values.length);
+
+                for (int i = 0; i < end; i++) {
+                    if (i < values.length) tags.add(new AbstractMap.SimpleEntry<>(schema[i], values[i]));
+                }
+            }
+        }
+
+        return tags;
+    }
+
 }

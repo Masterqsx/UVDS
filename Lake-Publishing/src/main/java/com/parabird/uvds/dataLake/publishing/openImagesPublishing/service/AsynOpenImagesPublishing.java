@@ -129,14 +129,14 @@ public class AsynOpenImagesPublishing {
         runningTasks.add(tTask);
 
 
-        /*for (String metaPath : getSourceMetadata()) {
-            SourceMetaDataETTask metaDataETTask = applicationContext.getBean(SourceMetaDataETTask.class);
+        for (String metaPath : getSourceMetadata()) {
+            SourceMetaDataOneByOneETTask metaDataETTask = applicationContext.getBean(SourceMetaDataOneByOneETTask.class);
             metaDataETTask.initialize(imageMediaQueue, metaPath);
             ListenableFuture<String> metaDataETRes = taskExecutor.submitListenable(metaDataETTask);
             metaDataETRes.addCallback(callback);
             runningFutures.add(metaDataETRes);
             runningTasks.add(metaDataETTask);
-        }*/
+        }
 
         //SimpleLoaderTask loaderTask = applicationContext.getBean(SimpleLoaderTask.class);
         BatchJdbcLoaderTask loaderTask = applicationContext.getBean(BatchJdbcLoaderTask.class);

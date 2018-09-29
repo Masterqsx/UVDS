@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +72,17 @@ public class TestFileUtils {
         assertEquals(lines.get(0).get(1), "text");
         assertEquals(lines.get(1).get(0), "1");
         assertEquals(lines.get(1).get(1), "");
+    }
+
+    @Test
+    public void testLoadCSVOneRecordAsMap() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(FileUtils.loadFile("src/test/resources/testCSV3.csv")));
+
+        String[] schema = reader.readLine().split(",");
+
+
+        List<Map.Entry<String, String>> record = FileUtils.loadCSVOneRecordAsMap(reader, ",", schema);
+        assertEquals(record.size(), 1);
+        assertEquals(record.get(0).getValue(), "1");
     }
 }

@@ -142,9 +142,9 @@ public class ImageMediaOptimizedDAO {
     @Transactional
     public void saveImageMediaBatch (List<ImageMedia> images) {
 
-        for (ImageMedia image : images) {
-            fillManagedSource(image);
-        }
+       // for (ImageMedia image : images) {
+       //     fillManagedSource(image);
+       // }
 
         String mediaSql = "insert into Media " +
          "(file_name, file_path, insert_time, source_source_id, source_uid, uid, format, height, width, dtype) " +

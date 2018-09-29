@@ -8,10 +8,7 @@ import com.parabird.uvds.dataLake.publishing.transformer.ITransformer;
 import org.apache.commons.io.FilenameUtils;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class OpenImagesTransformer implements ITransformer {
 
@@ -65,5 +62,24 @@ public class OpenImagesTransformer implements ITransformer {
         }
 
         return transformed;
+    }
+
+    public static ImageMedia transformSourceMetaDataOpenImages(List<Map.Entry<String, String>> line) {
+        ImageMedia cur = ImageMedia.newImageMediaBuilder()
+            .setSourceUid(line.get(0).getValue())
+            .setUid(line.get(0).getValue() + SOURCE_NAME)
+            .setTags(new HashMap<>())
+            .setSource(Source.newSourceBuilder()
+                .setSourceName(SOURCE_NAME)
+                .setDescription(SOURCE_DESC)
+                .build()
+            )
+            .build();
+
+        for (int i = 1; i < line.size(); i++) {
+            cur.getTags().put(line.get(i).getKey(), line.get(i).getValue());
+        }
+
+        return cur;
     }
 }

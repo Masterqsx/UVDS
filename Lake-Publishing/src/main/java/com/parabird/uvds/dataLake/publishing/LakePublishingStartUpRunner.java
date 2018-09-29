@@ -6,12 +6,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LakePublishingStartUpRunner implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(LakePublishingStartUpRunner.class);
+
+    @Autowired
+    ApplicationContext appContext;
 
     @Autowired
     AsynOpenImagesPublishing publishing;
@@ -34,6 +39,11 @@ public class LakePublishingStartUpRunner implements ApplicationRunner {
         publishing.mqInitialize(1000, 60L, 1000, 60L, 1000, 60L);
 
         publishing.asynPublish();
+
+        publishing.waitAsynPublishFinish();
+
+        SpringApplication.exit(appContext, () -> 0);
+
     }
 
 }

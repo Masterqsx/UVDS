@@ -5,6 +5,7 @@ import com.parabird.uvds.common.utils.FileUtils;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceFile;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceMetaData;
 import com.parabird.uvds.dataLake.publishing.extractor.IExtractor;
+import com.parabird.uvds.dataLake.publishing.mqOperator.IMQOperator;
 
 import java.io.File;
 import java.io.IOException;
