@@ -19,4 +19,7 @@ public interface MediaBaseDAO<T extends Media> extends JpaRepository<T, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public List<T> findBySourceUidAndSource_SourceName(String sourceUid, String sourceName);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public T findOneByUid(String uid);
 }

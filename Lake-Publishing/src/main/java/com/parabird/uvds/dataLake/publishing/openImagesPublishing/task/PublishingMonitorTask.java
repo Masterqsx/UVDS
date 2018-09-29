@@ -4,26 +4,21 @@ import com.parabird.uvds.dataLake.publishing.task.ITask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.TimerTask;
 
 public class PublishingMonitorTask extends TimerTask {
 
     private Logger logger = LoggerFactory.getLogger(PublishingMonitorTask.class);
 
-    private List<ITask> tasks;
+    private ITask task;
 
-
-    public PublishingMonitorTask(List<ITask> tasks) {
-        this.tasks = tasks;
+    public PublishingMonitorTask(ITask task) {
+        this.task = task;
     }
 
     @Override
     public void run() {
-        logger.info("**************");
-        for (ITask task : tasks) {
-            logger.info(task.getClass().getSimpleName() + " completed [" + task.getCount().toString() + "] works");
-        }
+        logger.info(task.getClass().getSimpleName() + " completed [" + task.getCount().toString() + "] works");
         logger.info("**************");
     }
 }

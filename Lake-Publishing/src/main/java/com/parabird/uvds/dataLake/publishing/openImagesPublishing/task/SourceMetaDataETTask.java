@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
@@ -48,6 +49,10 @@ public class SourceMetaDataETTask extends MonitorableTask implements Callable<St
 
     @Override
     public String call() {
+        Timer timer = new Timer(true);
+
+        timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
+
         List<ImageMedia> medias = null;
 
         setCount(0L);
@@ -69,6 +74,8 @@ public class SourceMetaDataETTask extends MonitorableTask implements Callable<St
         }
 
         getImageMediaQueue().end();
+
+        timer.cancel();
 
         return "Extracting source meta data to Onboarding Schema completed! Finish [" + getCount().toString() + "] extracting";
     }

@@ -14,7 +14,8 @@ public class Source implements Serializable {
     private static final long serialVersionUID = 4577341449072703351L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "sourceId")
     private Long sourceId;
 

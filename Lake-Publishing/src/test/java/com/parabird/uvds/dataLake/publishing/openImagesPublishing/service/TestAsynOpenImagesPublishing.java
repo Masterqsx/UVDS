@@ -29,7 +29,7 @@ public class TestAsynOpenImagesPublishing {
     public void testAsynPublish() {
         publishing.setSourceMediaFolder(Arrays.asList(new String[]{"src/test/resources"}));
         publishing.setSourceMetadata(Arrays.asList(new String[]{"src/test/resources/testCSV1.csv", "src/test/resources/testCSV2.csv"}));
-        publishing.mqInitialize(2, 4L, 2, 4L, 2, 4L);
+        publishing.mqInitialize(10, 4L, 10, 4L, 10, 4L);
         publishing.asynPublish();
 
         publishing.waitAsynPublishFinish();

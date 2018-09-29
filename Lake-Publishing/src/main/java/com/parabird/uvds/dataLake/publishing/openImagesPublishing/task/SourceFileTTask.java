@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Timer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
@@ -45,6 +46,10 @@ public class SourceFileTTask extends MonitorableTask implements Callable<String>
 
     @Override
     public String call() {
+        Timer timer = new Timer(true);
+
+        timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
+
         DiskSourceFile sourceFile = null;
 
         setCount(0L);
@@ -69,6 +74,8 @@ public class SourceFileTTask extends MonitorableTask implements Callable<String>
             }
         }
         getImageMediaQueue().end();
+
+        timer.cancel();
 
         return "Transforming from source medias to media entity in Onboarding Schema completed ! Finish ["
             + getCount().toString() + "] transforming";

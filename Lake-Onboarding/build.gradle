@@ -13,7 +13,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id 'org.springframework.boot' version '2.0.4.RELEASE'
+    id 'org.springframework.boot' version '2.0.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
@@ -39,7 +39,7 @@ dependencies {
     testImplementation 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.27'
     testImplementation 'com.h2database:h2:1.4.197'
 }
-
+/*
 task dbRemove {
     def mysql = buildscript.configurations.classpath.find { it.toString().contains("mysql-connector-java") }
     URLClassLoader loader = GroovyObject.class.classLoader
@@ -67,5 +67,5 @@ task dbRecreate {
 
 task datastoreRecreate {
     dependsOn 'dbRecreate'
-}
+}*/
 

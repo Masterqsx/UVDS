@@ -17,7 +17,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -139,16 +138,13 @@ public class AsynOpenImagesPublishing {
             runningTasks.add(metaDataETTask);
         }*/
 
-        SimpleLoaderTask loaderTask = applicationContext.getBean(SimpleLoaderTask.class);
+        //SimpleLoaderTask loaderTask = applicationContext.getBean(SimpleLoaderTask.class);
+        BatchJdbcLoaderTask loaderTask = applicationContext.getBean(BatchJdbcLoaderTask.class);
         loaderTask.initialize(imageMediaQueue);
         ListenableFuture<String> loaderRes = taskExecutor.submitListenable(loaderTask);
         loaderRes.addCallback(callback);
         runningFutures.add(loaderRes);
         runningTasks.add(loaderTask);
-
-        Timer timer = new Timer(true);
-        timer.schedule(new PublishingMonitorTask(runningTasks), 10000, 30000);
-
     }
 
     /** Since tasks are designed for asyn setup, this is the method for test only**/

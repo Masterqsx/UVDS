@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
@@ -49,6 +50,10 @@ public class SourceFileETask extends MonitorableTask implements Callable<String>
 
     @Override
     public String call() {
+        Timer timer = new Timer(true);
+
+        timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
+
         File file = null;
 
         setCount(0L);
@@ -75,6 +80,8 @@ public class SourceFileETask extends MonitorableTask implements Callable<String>
             }
         }
         getQueue().end();
+
+        timer.cancel();
 
         return "Extracting source medias to transformer completed! Finish [" + getCount().toString() + "] extracting";
     }

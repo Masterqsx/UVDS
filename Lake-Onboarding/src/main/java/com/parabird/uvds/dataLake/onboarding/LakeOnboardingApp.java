@@ -6,6 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LakeOnboardingApp {
     public static void main(String[] args) {
-        SpringApplication.run(LakeOnboardingApp.class, args);
+        SpringApplication.run(LakeOnboardingApp.class, args).close();
     }
 }

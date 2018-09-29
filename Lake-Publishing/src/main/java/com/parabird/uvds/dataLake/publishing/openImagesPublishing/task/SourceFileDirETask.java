@@ -12,6 +12,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
@@ -50,6 +51,11 @@ public class SourceFileDirETask extends MonitorableTask implements Callable<Stri
 
     @Override
     public String call() {
+
+        Timer timer = new Timer(true);
+
+        timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
+
         DirectoryStream<Path> dirStream = null;
 
         setCount(0L);
@@ -69,6 +75,8 @@ public class SourceFileDirETask extends MonitorableTask implements Callable<Stri
         } finally {
             getFileQueue().end();
         }
+
+        timer.cancel();
 
         return "Extracting source medias in folder compeleted! Finish [" + getCount().toString() + "] extracting";
     }

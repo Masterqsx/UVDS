@@ -25,4 +25,8 @@ public class MonitorableTask implements ITask {
     public void addCount() {
         this.count++;
     }
+
+    public void addCount(Long add) {
+        this.count += add;
+    }
 }

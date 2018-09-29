@@ -17,7 +17,8 @@ public class Media implements Serializable {
     private static final long serialVersionUID = -1768967866769157514L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "dataId")
     private Long dataId;
 
@@ -30,7 +31,7 @@ public class Media implements Serializable {
     @Column(name = "sourceUid")
     private String sourceUid;
 
-    @Column(name = "uid")
+    @Column(name = "uid", unique = true)
     private String uid;
 
     @Column(name = "filePath")

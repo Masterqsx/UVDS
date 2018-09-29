@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -53,7 +54,7 @@ public class SimpleLoader {
         fillManagedSource(record);
 
         if (imageMedias.isEmpty()) {
-            imageDao.saveAndFlush(record);
+            imageDao.save(record);
         }
         else {
             for (ImageMedia media : imageMedias) {
@@ -64,9 +65,37 @@ public class SimpleLoader {
                 temp.getTags().putAll(media.getTags());
                 temp.setDataId(media.getDataId());
 
-                imageDao.saveAndFlush(temp);
+                imageDao.save(temp);
             }
         }
+    }
+
+    public void saveImageMediaByUid(ImageMedia record) {
+        ImageMedia imageMedia = imageDao.findOneByUid(record.getUid());
+
+        //fillManagedSource();
+    }
+
+    public void saveImageMediaBySourceBatch(List<ImageMedia> records) {
+        List<ImageMedia> imageMediaList = records.stream().flatMap(
+            (ImageMedia record) -> {
+                List<ImageMedia> imageMedias = Optional
+                    .ofNullable(
+                        imageDao.findBySourceUidAndSource_SourceName(record.getSourceUid()
+                            , Optional.ofNullable(
+                                record.getSource()
+                                    ).map(Source::getSourceName).orElse(null))
+                            )
+                            .orElse(new ArrayList<>());
+                return imageMedias.stream();
+            }
+        ).collect(Collectors.toList());
+
+        for (ImageMedia media : records) {
+            fillManagedSource(media);
+        }
+
+
     }
 
 

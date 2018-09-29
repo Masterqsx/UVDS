@@ -15,6 +15,8 @@ import java.util.List;
 
 public class OpenImagesTransformer implements ITransformer {
 
+    // TODO validate uid makes from sourceUid and sourceName
+
     private static final String SOURCE_NAME = "OpenImagesV4";
 
     private static final String SOURCE_DESC = "Open Images V4 at https://storage.googleapis.com/openimages/web/download.html";
@@ -30,6 +32,7 @@ public class OpenImagesTransformer implements ITransformer {
             .setFilePath(sourceFile.getFileAbsolutePath())
             .setFileName(FilenameUtils.getName(sourceFile.getFileAbsolutePath()))
             .setSourceUid(FilenameUtils.getBaseName(sourceFile.getFileAbsolutePath()))
+            .setUid(FilenameUtils.getBaseName(sourceFile.getFileAbsolutePath()) + SOURCE_NAME)
             .setTags(sourceFile.getTags())
             .setSource(Source.newSourceBuilder()
                     .setSourceName(SOURCE_NAME)
@@ -46,6 +49,7 @@ public class OpenImagesTransformer implements ITransformer {
         for (List<String> line : sourceMetaData.getRecords()) {
             ImageMedia cur = ImageMedia.newImageMediaBuilder()
                 .setSourceUid(line.get(0))
+                .setUid(line.get(0) + SOURCE_NAME)
                 .setTags(new HashMap<>())
                 .setSource(Source.newSourceBuilder()
                         .setSourceName(SOURCE_NAME)
