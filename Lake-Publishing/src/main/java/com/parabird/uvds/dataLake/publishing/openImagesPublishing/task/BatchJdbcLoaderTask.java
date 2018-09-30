@@ -46,9 +46,6 @@ public class BatchJdbcLoaderTask extends MonitorableTask implements Callable<Str
     @Autowired
     BatchJdbcLoader loader;
 
-    @Autowired
-    SourceDAO sourceDAO;
-
 
     @Override
     public String call() throws Exception {
@@ -57,12 +54,12 @@ public class BatchJdbcLoaderTask extends MonitorableTask implements Callable<Str
 
         timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
 
-        Source openImages = Source.newSourceBuilder()
+      /*  Source openImages = Source.newSourceBuilder()
             .setSourceName(SOURCE_NAME)
             .setDescription(SOURCE_DESC)
             .build();
 
-        openImages = sourceDAO.saveAndFlush(openImages);
+        openImages = sourceDAO.saveAndFlush(openImages);*/
 
         ImageMedia media = null;
 
