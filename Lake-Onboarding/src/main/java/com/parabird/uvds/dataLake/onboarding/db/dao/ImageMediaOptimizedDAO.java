@@ -32,7 +32,7 @@ public class ImageMediaOptimizedDAO {
     @Transactional
     public ImageMedia findOneByUid(ImageMedia image, EntityManager em) {
 
-        Query query = em.createNativeQuery("select distinct * from Media m where m.uid = (:uid) and m.dtype= 'ImageMedia' for update", ImageMedia.class);
+        Query query = em.createNativeQuery("select distinct * from media m where m.uid = (:uid) and m.dtype= 'ImageMedia' for update", ImageMedia.class);
         query.setParameter("uid", image.getUid());
         try {
             return (ImageMedia) query.getSingleResult();
@@ -43,7 +43,7 @@ public class ImageMediaOptimizedDAO {
 
     @Transactional
     public BigInteger findMediaIdByUid (ImageMedia image, EntityManager em) {
-        Query query = em.createNativeQuery("select distinct data_id from Media m where m.uid = (:uid) and m.dtype= 'ImageMedia' for update");
+        Query query = em.createNativeQuery("select distinct data_id from media m where m.uid = (:uid) and m.dtype= 'ImageMedia' for update");
         query.setParameter("uid", image.getUid());
         try {
             return (BigInteger) query.getSingleResult();
@@ -82,7 +82,7 @@ public class ImageMediaOptimizedDAO {
     @Transactional
     public void fillManagedSource(ImageMedia record) {
         if (record.getSource() == null || record.getSource().getSourceName() == null) return;
-        String sqlInsert = "insert into Source (source_name, description)" +
+        String sqlInsert = "insert into source (source_name, description)" +
                 "values (?, ?)" +
                 "on duplicate key update description = ?";
 
@@ -111,7 +111,7 @@ public class ImageMediaOptimizedDAO {
     @Transactional
     public void saveTags(List<ImageMedia> images) {
         String tagSql = "insert into media_tags (media_data_id, tag_source, tag_id, tag_name, tag_value)" +
-         "select data_id, ?, ?, ?, ? from Media where uid = ?" +
+         "select data_id, ?, ?, ?, ? from media where uid = ?" +
           "on duplicate key update tag_value = ?";
 
         List<List<Object>> tags = new ArrayList<>();
@@ -150,7 +150,7 @@ public class ImageMediaOptimizedDAO {
        //     fillManagedSource(image);
        // }
 
-        String mediaSql = "insert into Media " +
+        String mediaSql = "insert into media " +
          "(file_name, file_path, insert_time, source_source_id, source_uid, uid, format, height, width, dtype) " +
           "values " +
            "(?, ?, ?, ?, ?, ?, ?, ?, ?, 'ImageMedia')" +
