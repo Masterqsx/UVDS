@@ -1,6 +1,8 @@
 package com.parabird.uvds.dataLake.publishing.openImagesPublishing.task;
 
+import com.parabird.uvds.dataLake.onboarding.db.dao.SourceDAO;
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
+import com.parabird.uvds.dataLake.onboarding.db.model.Source;
 import com.parabird.uvds.dataLake.onboarding.db.service.BatchJdbcLoader;
 import com.parabird.uvds.dataLake.onboarding.db.service.SimpleLoader;
 import com.parabird.uvds.dataLake.publishing.mqOperator.IMQOperator;
@@ -44,6 +46,9 @@ public class BatchJdbcLoaderTask extends MonitorableTask implements Callable<Str
     @Autowired
     BatchJdbcLoader loader;
 
+    @Autowired
+    SourceDAO sourceDAO;
+
 
     @Override
     public String call() throws Exception {
@@ -51,6 +56,13 @@ public class BatchJdbcLoaderTask extends MonitorableTask implements Callable<Str
         Timer timer = new Timer(true);
 
         timer.schedule(new PublishingMonitorTask(this), 10000, 30000);
+
+        Source openImages = Source.newSourceBuilder()
+            .setSourceName(SOURCE_NAME)
+            .setDescription(SOURCE_DESC)
+            .build();
+
+        openImages = sourceDAO.saveAndFlush(openImages);
 
         ImageMedia media = null;
 

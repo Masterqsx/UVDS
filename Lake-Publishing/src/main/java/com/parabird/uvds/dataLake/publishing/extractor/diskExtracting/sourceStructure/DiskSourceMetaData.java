@@ -1,7 +1,9 @@
 package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure;
 
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class DiskSourceMetaData extends DiskSourceFile {
     /** This is the meta data source file itself does not have
@@ -42,7 +44,7 @@ public class DiskSourceMetaData extends DiskSourceFile {
 
     public static final class DiskSourceMetaDataBuilder {
         protected String fileAbsolutePath;
-        protected Map<String, String> tags;
+        protected Set<Tag> tags;
         private List<String> schema;
         private List<List<String>> records;
 
@@ -68,7 +70,7 @@ public class DiskSourceMetaData extends DiskSourceFile {
             return this;
         }
 
-        public DiskSourceMetaDataBuilder setTags(Map<String, String> tags) {
+        public DiskSourceMetaDataBuilder setTags(Set<Tag> tags) {
             this.tags = tags;
             return this;
         }

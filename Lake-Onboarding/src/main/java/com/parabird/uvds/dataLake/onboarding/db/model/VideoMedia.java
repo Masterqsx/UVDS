@@ -3,9 +3,7 @@ package com.parabird.uvds.dataLake.onboarding.db.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class VideoMedia extends Media implements Serializable {
@@ -99,7 +97,7 @@ public class VideoMedia extends Media implements Serializable {
         private String uid;
         private String filePath;
         private String fileName;
-        private Map<String, String> tags = new HashMap<>();
+        private Set<Tag> tags = new HashSet<>();
 
         private VideoMediaBuilder() {
         }
@@ -163,7 +161,7 @@ public class VideoMedia extends Media implements Serializable {
             return this;
         }
 
-        public VideoMediaBuilder setTags(Map<String, String> tags) {
+        public VideoMediaBuilder setTags(Set<Tag> tags) {
             this.tags = tags;
             return this;
         }

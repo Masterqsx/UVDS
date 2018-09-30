@@ -1,14 +1,16 @@
 package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure;
 
 
-import java.util.Map;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
+
+import java.util.Set;
 
 public class DiskSourceFile{
 
     protected String fileAbsolutePath;
 
     /** This is the meta data of its format or storage*/
-    protected Map<String, String> tags;
+    protected Set<Tag> tags;
 
     public String getFileAbsolutePath() {
         return fileAbsolutePath;
@@ -18,11 +20,11 @@ public class DiskSourceFile{
         this.fileAbsolutePath = fileAbsolutePath;
     }
 
-    public Map<String, String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Map<String, String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -40,7 +42,7 @@ public class DiskSourceFile{
 
     public static final class DiskSourceFileBuilder {
         protected String fileAbsolutePath;
-        protected Map<String, String> tags;
+        protected Set<Tag> tags;
 
         private DiskSourceFileBuilder() {
         }
@@ -54,7 +56,7 @@ public class DiskSourceFile{
             return this;
         }
 
-        public DiskSourceFileBuilder setTags(Map<String, String> tags) {
+        public DiskSourceFileBuilder setTags(Set<Tag> tags) {
             this.tags = tags;
             return this;
         }

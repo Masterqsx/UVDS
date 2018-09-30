@@ -69,13 +69,14 @@ public class SourceMetaDataOneByOneETTask extends MonitorableTask implements Cal
 
                 String[] schema = schemaLine.split(",");
 
+
                 while (true) {
 
                     List<Map.Entry<String, String>> record = FileUtils.loadCSVOneRecordAsMap(reader, ",", schema);
 
                     if (record == null) break;
 
-                    getImageMediaQueue().sink(OpenImagesTransformer.transformSourceMetaDataOpenImages(record));
+                    getImageMediaQueue().sink(OpenImagesTransformer.transformSourceMetaDataOpenImages(record, metadataPath, getCount().intValue()));
 
                     addCount();
                 }

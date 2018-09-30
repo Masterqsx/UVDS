@@ -2,6 +2,7 @@ package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting;
 
 import com.parabird.uvds.common.enums.MediaType;
 import com.parabird.uvds.common.utils.FileUtils;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceFile;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceMetaData;
 import com.parabird.uvds.dataLake.publishing.extractor.IExtractor;
@@ -9,9 +10,7 @@ import com.parabird.uvds.dataLake.publishing.mqOperator.IMQOperator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DiskExtractor implements IExtractor {
 
@@ -36,7 +35,7 @@ public class DiskExtractor implements IExtractor {
 
         return DiskSourceFile.newDiskSourceFileBuilder()
                 .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
-                .setTags(fileTags)
+                .setTags(fileMetaInfoToTag(fileTags))
                 .build();
     }
 
@@ -44,6 +43,21 @@ public class DiskExtractor implements IExtractor {
         File file = FileUtils.loadFile(filePath);
 
         return extractSourceMedia(file, mediaType, customTags);
+    }
+
+    private static Set<Tag> fileMetaInfoToTag(Map<String, String> fileTags) {
+        Set<Tag> tags = new HashSet<>();
+
+        for (Map.Entry<String, String> entry : fileTags.entrySet()) {
+            tags.add(Tag.newTagBuilder()
+                    .setTagSource(FileUtils.FILE_META)
+                    .setTagName(entry.getKey())
+                    .setTagValue(entry.getValue())
+                    .setTagId(0)
+                    .build());
+        }
+
+        return tags;
     }
 
     /** This method load Meta data file as a table */
@@ -70,7 +84,7 @@ public class DiskExtractor implements IExtractor {
 
         return DiskSourceMetaData.newDiskSourceMetaDataBuilder()
                 .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
-                .setTags(fileTags)
+                .setTags(fileMetaInfoToTag(fileTags))
                 .setSchema(lines.get(0))
                 .setRecords(lines.size() > 1 ? lines.subList(1, lines.size()) : new ArrayList<>())
                 .build();

@@ -15,6 +15,7 @@ public class FileUtils {
     public static final String FILE_PATH = "fileAbsolutePath";
     public static final String FILE_SIZE = "fileSize";
     public static final String FILE_EXTEN = "fileExtension";
+    public static final String FILE_META = "fileMeta";
 
     public static File loadFile(String filePath) throws IOException {
         File file = new File(filePath);

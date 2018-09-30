@@ -5,6 +5,7 @@ import com.parabird.uvds.dataLake.onboarding.db.dao.ImageMediaDAO;
 import com.parabird.uvds.dataLake.onboarding.db.dao.SourceDAO;
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
 import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -59,8 +61,13 @@ public class TestSimpleLoader {
                 .setSource(sourceRecord)
                 .setFileName("fileName1")
                 .setFilePath("filePath1")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey1","tagValue1");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(2)
+                            .setTagName("tagName2")
+                            .setTagValue("tagValue2")
+                            .build());
                 }})
                 .setFormat("format1")
                 .build();
@@ -72,8 +79,13 @@ public class TestSimpleLoader {
                     .build())
                 .setFileName("fileName2")
                 .setFilePath("filePath2")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey2","tagValue2");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(2)
+                            .setTagName("tagName2")
+                            .setTagValue("tagValue2")
+                            .build());
                 }})
                 .setFormat("format2")
                 .build();
@@ -82,8 +94,13 @@ public class TestSimpleLoader {
                 .setSourceUid("sourceUid")
                 .setFileName("fileName3")
                 .setFilePath("filePath3")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey3","tagValue3");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(2)
+                            .setTagName("tagName2")
+                            .setTagValue("tagValue2")
+                            .build());
                 }})
                 .setFormat("format3")
                 .build();
@@ -95,8 +112,13 @@ public class TestSimpleLoader {
                     .build())
                 .setFileName("fileName4")
                 .setFilePath("filePath4")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey4","tagValue4");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(2)
+                            .setTagName("tagName2")
+                            .setTagValue("tagValue2")
+                            .build());
                 }})
                 .setFormat("format4")
                 .build();

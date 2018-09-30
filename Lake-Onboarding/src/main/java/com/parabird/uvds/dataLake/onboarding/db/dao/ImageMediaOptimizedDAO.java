@@ -2,6 +2,7 @@ package com.parabird.uvds.dataLake.onboarding.db.dao;
 
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
 import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -68,13 +69,13 @@ public class ImageMediaOptimizedDAO {
             queryUpdate.setParameter("dataId", retrieved);
             queryUpdate.executeUpdate();
 
-            for (Map.Entry<String, String> entry: image.getTags().entrySet()) {
+            /*for (Map.Entry<String, String> entry: image.getTags().entrySet()) {
                 Query queryTags = em.createNativeQuery("insert into tags (media_data_id, tag_name, tag_value) values((:dataId) , (:tagName), (:tagValue)) on duplicate key update tag_value = (:tagName)");
                 queryTags.setParameter("dataId", retrieved);
                 queryTags.setParameter("tagName", entry.getKey());
                 queryTags.setParameter("tagValue", entry.getValue());
                 queryTags.executeUpdate();
-            }
+            }*/
         }
     }
 
@@ -109,15 +110,15 @@ public class ImageMediaOptimizedDAO {
 
     @Transactional
     public void saveTags(List<ImageMedia> images) {
-        String tagSql = "insert into Tags (media_data_id, tag_name, tag_value)" +
-         "select data_id, ?, ? from Media where uid = ?" +
+        String tagSql = "insert into media_tags (media_data_id, tag_source, tag_id, tag_name, tag_value)" +
+         "select data_id, ?, ?, ?, ? from Media where uid = ?" +
           "on duplicate key update tag_value = ?";
 
-        List<List<String>> tags = new ArrayList<>();
+        List<List<Object>> tags = new ArrayList<>();
         for (ImageMedia image: images) {
             if (image.getTags() ==  null) continue;
-            for (Map.Entry<String, String> tag : image.getTags().entrySet()) {
-                tags.add(Arrays.asList(tag.getKey(), tag.getValue(), image.getUid()));
+            for (Tag tag : image.getTags()) {
+                tags.add(Arrays.asList(tag.getTagSource(), tag.getTagId(), tag.getTagName(), tag.getTagValue(), image.getUid()));
             }
         }
 
@@ -125,11 +126,14 @@ public class ImageMediaOptimizedDAO {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 int count = 1;
-                List<String> tuple = tags.get(i);
-                ps.setString(count++, tuple.get(0));
-                ps.setString(count++, tuple.get(1));
-                ps.setString(count++, tuple.get(2));
-                ps.setString(count++, tuple.get(1));
+                List<Object> tuple = tags.get(i);
+                ps.setString(count++, (String) tuple.get(0));
+                if (tuple.get(1) == null) ps.setNull(count++, Types.INTEGER);
+                else ps.setInt(count++, (Integer) tuple.get(1));
+                ps.setString(count++, (String) tuple.get(2));
+                ps.setString(count++, (String) tuple.get(3));
+                ps.setString(count++, (String) tuple.get(4));
+                ps.setString(count++, (String) tuple.get(3));
             }
 
             @Override

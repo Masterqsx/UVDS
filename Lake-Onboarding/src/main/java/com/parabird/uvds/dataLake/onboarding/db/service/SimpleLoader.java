@@ -62,7 +62,7 @@ public class SimpleLoader {
 
                 temp.merge(media);
 
-                temp.getTags().putAll(media.getTags());
+                temp.getTags().addAll(media.getTags());
                 temp.setDataId(media.getDataId());
 
                 imageDao.save(temp);

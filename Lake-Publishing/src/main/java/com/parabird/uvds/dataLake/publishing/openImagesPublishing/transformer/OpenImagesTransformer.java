@@ -2,6 +2,7 @@ package com.parabird.uvds.dataLake.publishing.openImagesPublishing.transformer;
 
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
 import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceFile;
 import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceMetaData;
 import com.parabird.uvds.dataLake.publishing.transformer.ITransformer;
@@ -43,11 +44,12 @@ public class OpenImagesTransformer implements ITransformer {
 
     public static List<ImageMedia> transformSourceMetaDataOpenImages(DiskSourceMetaData sourceMetaData) {
         List<ImageMedia> transformed = new ArrayList<>();
+        int count = 0;
         for (List<String> line : sourceMetaData.getRecords()) {
             ImageMedia cur = ImageMedia.newImageMediaBuilder()
                 .setSourceUid(line.get(0))
                 .setUid(line.get(0) + SOURCE_NAME)
-                .setTags(new HashMap<>())
+                .setTags(new HashSet<>())
                 .setSource(Source.newSourceBuilder()
                         .setSourceName(SOURCE_NAME)
                         .setDescription(SOURCE_DESC)
@@ -56,19 +58,27 @@ public class OpenImagesTransformer implements ITransformer {
                 .build();
 
             for (int i = 1; i < line.size(); i++) {
-                cur.getTags().put(sourceMetaData.getSchema().get(i), line.get(i));
+                cur.getTags().add(
+                    Tag.newTagBuilder()
+                    .setTagSource(sourceMetaData.getFileAbsolutePath())
+                    .setTagId(count)
+                    .setTagName(sourceMetaData.getSchema().get(i))
+                    .setTagValue(line.get(i))
+                    .build()
+                );
             }
             transformed.add(cur);
+            count++;
         }
 
         return transformed;
     }
 
-    public static ImageMedia transformSourceMetaDataOpenImages(List<Map.Entry<String, String>> line) {
+    public static ImageMedia transformSourceMetaDataOpenImages(List<Map.Entry<String, String>> line, String metaFileName, int count) {
         ImageMedia cur = ImageMedia.newImageMediaBuilder()
             .setSourceUid(line.get(0).getValue())
             .setUid(line.get(0).getValue() + SOURCE_NAME)
-            .setTags(new HashMap<>())
+            .setTags(new HashSet<>())
             .setSource(Source.newSourceBuilder()
                 .setSourceName(SOURCE_NAME)
                 .setDescription(SOURCE_DESC)
@@ -77,7 +87,13 @@ public class OpenImagesTransformer implements ITransformer {
             .build();
 
         for (int i = 1; i < line.size(); i++) {
-            cur.getTags().put(line.get(i).getKey(), line.get(i).getValue());
+            cur.getTags().add(Tag.newTagBuilder()
+                .setTagSource(metaFileName)
+                .setTagId(count)
+                .setTagName(line.get(i).getKey())
+                .setTagValue(line.get(i).getValue())
+                .build()
+                );
         }
 
         return cur;

@@ -3,6 +3,7 @@ package com.parabird.uvds.dataLake.onboarding.db.dao;
 import com.parabird.uvds.dataLake.onboarding.db.model.Media;
 import com.parabird.uvds.dataLake.onboarding.LakeOnboardingApp;
 import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +45,13 @@ public class TestMediaDAO {
             .setSource(sourceRecord)
             .setFileName("fileName1")
             .setFilePath("filePath1")
-            .setTags(new HashMap<String, String>() {{
-                put("tagKey1","tagValue1");
+            .setTags(new HashSet<Tag>() {{
+                add(Tag.newTagBuilder()
+                        .setTagSource("source1")
+                        .setTagId(2)
+                        .setTagName("tagName2")
+                        .setTagValue("tagValue2")
+                        .build());
             }})
             .build();
         mediaRecord2 = Media.newMediaBuilder()
@@ -55,8 +61,13 @@ public class TestMediaDAO {
             .setSource(sourceRecord)
             .setFileName("fileName2")
             .setFilePath("filePath2")
-            .setTags(new HashMap<String, String>() {{
-                put("tagKey2","tagValue2");
+            .setTags(new HashSet<Tag>() {{
+                add(Tag.newTagBuilder()
+                        .setTagSource("source1")
+                        .setTagId(2)
+                        .setTagName("tagName3")
+                        .setTagValue("tagValue4")
+                        .build());
             }})
             .build();
     }

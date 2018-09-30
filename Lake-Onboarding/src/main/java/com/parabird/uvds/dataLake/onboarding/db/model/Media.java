@@ -5,9 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "MEDIA")
@@ -41,10 +39,7 @@ public class Media implements Serializable {
     private String fileName;
 
     @ElementCollection
-    @CollectionTable(name="tags")
-    @MapKeyColumn(name="tagName")
-    @Column(name="tagValue")
-    private Map<String, String> tags = new HashMap<>();
+    private Set<Tag> tags = new HashSet<>();
 
     public Media() {}
 
@@ -88,11 +83,11 @@ public class Media implements Serializable {
         this.filePath = filePath;
     }
 
-    public Map<String, String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Map<String, String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -126,16 +121,6 @@ public class Media implements Serializable {
                 '}';
     }
 
-    private boolean mapEquals(Map<String, String> l, Map<String, String> r) {
-        if (l.size() != r.size()) return false;
-        for (Map.Entry<String, String> lEntry: l.entrySet()) {
-            if (!r.containsKey(lEntry.getKey())
-                || !(r.get(lEntry.getKey()).equals(lEntry.getValue())))
-                return false;
-        }
-        return true;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -147,8 +132,7 @@ public class Media implements Serializable {
                 Objects.equals(sourceUid, media.sourceUid) &&
                 Objects.equals(uid, media.uid) &&
                 Objects.equals(filePath, media.filePath) &&
-                Objects.equals(fileName, media.fileName) &&
-                mapEquals(tags, media.tags);
+                Objects.equals(fileName, media.fileName);
     }
 
     @Override
@@ -169,7 +153,7 @@ public class Media implements Serializable {
         private String uid;
         private String filePath;
         private String fileName;
-        private Map<String, String> tags = new HashMap<>();
+        private Set<Tag> tags = new HashSet<>();
 
         private MediaBuilder() {
         }
@@ -213,7 +197,7 @@ public class Media implements Serializable {
             return this;
         }
 
-        public MediaBuilder setTags(Map<String, String> tags) {
+        public MediaBuilder setTags(Set<Tag> tags) {
             this.tags = tags;
             return this;
         }

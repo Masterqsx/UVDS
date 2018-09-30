@@ -4,9 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class ImageMedia extends Media implements Serializable {
@@ -46,7 +44,7 @@ public class ImageMedia extends Media implements Serializable {
     }
 
     public ImageMedia clone() {
-        return ImageMedia.newImageMediaBuilder()
+        ImageMedia cloned = ImageMedia.newImageMediaBuilder()
             .setDataId(getDataId())
             .setSource(getSource() == null ? null : Source.newSourceBuilder()
                 .setSourceId(getSource().getSourceId())
@@ -56,13 +54,27 @@ public class ImageMedia extends Media implements Serializable {
             .setInsertTime(getInsertTime())
             .setUid(getUid())
             .setFilePath(getFilePath())
-            .setTags(new HashMap<>(getTags()))
+            .setTags(getTags() == null ? null : new HashSet<>(getTags()))
             .setFileName(getFileName())
             .setSourceUid(getSourceUid())
             .setWidth(getWidth())
             .setHeight(getHeight())
             .setFormat(getFormat())
             .build();
+
+        if (getTags() != null) {
+            Set<Tag> cloneTags = new HashSet<>();
+            for (Tag tag : getTags()) {
+                cloneTags.add(Tag.newTagBuilder()
+                    .setTagId(tag.getTagId())
+                    .setTagSource(tag.getTagSource())
+                    .setTagName(tag.getTagName())
+                    .setTagValue(tag.getTagValue())
+                    .build());
+            }
+            cloned.setTags(cloneTags);
+        }
+        return cloned;
     }
 
     public ImageMedia merge(ImageMedia other) {
@@ -79,7 +91,7 @@ public class ImageMedia extends Media implements Serializable {
         if (getInsertTime() == null) setInsertTime(other.getInsertTime());
         if (getUid() == null) setUid(other.getUid());
         if (getFilePath() == null) setFilePath(other.getFilePath());
-        if (getTags() == null) setTags(new HashMap<>(other.getTags()));
+        if (getTags() == null && other.getTags() != null) setTags(new HashSet<>(other.getTags()));
         if (getFileName() == null) setFileName(other.getFileName());
         if (getSourceUid() == null) setSourceUid(other.getSourceUid());
         if (getWidth() == null) setWidth(other.getWidth());
@@ -130,7 +142,7 @@ public class ImageMedia extends Media implements Serializable {
         private String uid;
         private String filePath;
         private String fileName;
-        private Map<String, String> tags = new HashMap<>();
+        private Set<Tag> tags = new HashSet<>();
 
         private ImageMediaBuilder() {
         }
@@ -189,7 +201,7 @@ public class ImageMedia extends Media implements Serializable {
             return this;
         }
 
-        public ImageMediaBuilder setTags(Map<String, String> tags) {
+        public ImageMediaBuilder setTags(Set<Tag> tags) {
             this.tags = tags;
             return this;
         }

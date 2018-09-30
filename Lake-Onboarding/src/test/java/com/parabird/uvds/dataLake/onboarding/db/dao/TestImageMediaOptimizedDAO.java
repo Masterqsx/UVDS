@@ -3,6 +3,7 @@ package com.parabird.uvds.dataLake.onboarding.db.dao;
 import com.parabird.uvds.dataLake.onboarding.LakeOnboardingApp;
 import com.parabird.uvds.dataLake.onboarding.db.model.ImageMedia;
 import com.parabird.uvds.dataLake.onboarding.db.model.Source;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LakeOnboardingApp.class)
@@ -54,8 +55,13 @@ public class TestImageMediaOptimizedDAO {
                 .setSource(sourceRecord)
                 .setFileName("fileName1")
                 .setFilePath("filePath1")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey1","tagValue1");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(2)
+                            .setTagName("tagName2")
+                            .setTagValue("tagValue2")
+                            .build());
                 }})
                 .setFormat("format1")
                 .build();
@@ -66,9 +72,13 @@ public class TestImageMediaOptimizedDAO {
                 .setSource(sourceRecord)
                 .setFileName("fileName2")
                 .setFilePath("filePath2")
-                .setTags(new HashMap<String, String>() {{
-                    put("tagKey1","tagValue1");
-                    put("tagKey2","tagValue2");
+                .setTags(new HashSet<Tag>() {{
+                    add(Tag.newTagBuilder()
+                            .setTagSource("source1")
+                            .setTagId(4)
+                            .setTagName("tagName3")
+                            .setTagValue("tagValue3")
+                            .build());
                 }})
                 .setFormat("format2")
                 .build();
