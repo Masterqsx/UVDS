@@ -1,0 +1,93 @@
+package com.parabird.uvds.dataLake.publishing.extractor.diskExtracting;
+
+import com.parabird.uvds.common.enums.MediaType;
+import com.parabird.uvds.common.utils.FileUtils;
+import com.parabird.uvds.dataLake.onboarding.db.model.Tag;
+import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceFile;
+import com.parabird.uvds.dataLake.publishing.extractor.diskExtracting.sourceStructure.DiskSourceMetaData;
+import com.parabird.uvds.dataLake.publishing.extractor.IExtractor;
+import com.parabird.uvds.dataLake.publishing.mqOperator.IMQOperator;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
+public class DiskExtractor implements IExtractor {
+
+    public static DiskSourceFile extractSourceMedia(File file, MediaType mediaType, Map<String, String> customTags) throws IOException {
+        Map<String, String> fileTags = FileUtils.loadFileAndMetaInfo(file);
+
+        /** customTags can be provided by caller itself*/
+        if (customTags != null) fileTags.putAll(customTags);
+
+        switch(mediaType) {
+            /** add image meta info into tags such as resolution */
+            case IMAGE:
+                Map<String, String> imageTags = FileUtils.loadImageMetaInfo(file);
+                if (imageTags != null) {
+                    fileTags.putAll(FileUtils.loadImageMetaInfo(file));
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return DiskSourceFile.newDiskSourceFileBuilder()
+                .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
+                .setTags(fileMetaInfoToTag(fileTags))
+                .build();
+    }
+
+    public static DiskSourceFile extractSourceMedia(String filePath, MediaType mediaType, Map<String, String> customTags) throws IOException {
+        File file = FileUtils.loadFile(filePath);
+
+        return extractSourceMedia(file, mediaType, customTags);
+    }
+
+    private static Set<Tag> fileMetaInfoToTag(Map<String, String> fileTags) {
+        Set<Tag> tags = new HashSet<>();
+
+        for (Map.Entry<String, String> entry : fileTags.entrySet()) {
+            tags.add(Tag.newTagBuilder()
+                    .setTagSource(FileUtils.FILE_META)
+                    .setTagName(entry.getKey())
+                    .setTagValue(entry.getValue())
+                    .setTagId(0)
+                    .build());
+        }
+
+        return tags;
+    }
+
+    /** This method load Meta data file as a table */
+    public static DiskSourceMetaData extractSourceMetaData(String filePath, MediaType mediaType) throws IOException {
+        File file = FileUtils.loadFile(filePath);
+
+        Map<String, String> fileTags = FileUtils.loadFileAndMetaInfo(file);
+
+        List<List<String>> lines = null;
+
+        switch (mediaType) {
+            /** parse csv file with comma delimiter*/
+            case TEXT_CSV:
+                lines = FileUtils.loadCSV(file, ",");
+                break;
+
+            default:
+                break;
+        }
+
+        if (lines == null || lines.size() < 1) {
+            throw new IOException("The source meta data file can not be parsed!");
+        }
+
+        return DiskSourceMetaData.newDiskSourceMetaDataBuilder()
+                .setFileAbsolutePath(fileTags.get(FileUtils.FILE_PATH))
+                .setTags(fileMetaInfoToTag(fileTags))
+                .setSchema(lines.get(0))
+                .setRecords(lines.size() > 1 ? lines.subList(1, lines.size()) : new ArrayList<>())
+                .build();
+    }
+
+}

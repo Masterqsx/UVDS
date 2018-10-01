@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+}
+
+jar {
+    baseName = 'UVDS-Common'
+    version = project.properties['version']
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.8'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'com.drewnoakes:metadata-extractor:2.11.0'
+    implementation 'com.google.guava:guava:23.5-jre'
+
+    testImplementation 'org.slf4j:slf4j-api:1.7.25'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
+    testImplementation 'junit:junit:4.12'
+}

@@ -1,1 +1,6 @@
+include "Hello-World"
+include "Lake-Publishing"
+include "Lake-Onboarding"
+include "UVDS-Common"
+
 rootProject.name = 'UVDS'
